@@ -1,79 +1,29 @@
-"use strict";
+import _extends from "babel-runtime/helpers/extends";
+import _objectWithoutProperties from "babel-runtime/helpers/objectWithoutProperties";
+import _classCallCheck from "babel-runtime/helpers/classCallCheck";
+import _createClass from "babel-runtime/helpers/createClass";
+import _possibleConstructorReturn from "babel-runtime/helpers/possibleConstructorReturn";
+import _inherits from "babel-runtime/helpers/inherits";
+import React from "react";
+import PropTypes from "prop-types";
+import EditorCore from "./components/core/EditorCore";
+import EditorEventEmitter from "./utils/EditorEventEmitter";
+import EditorDOM from "./utils/EditorDOM";
+import EditorSelection from "./utils/EditorSelection";
+import Dialog from "./components/base/Dialog";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Dialog = exports.EditorSelection = exports.EditorDOM = undefined;
+import "./less/editor.less";
+import "./utils/Date.js";
 
-var _extends2 = require("babel-runtime/helpers/extends");
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _objectWithoutProperties2 = require("babel-runtime/helpers/objectWithoutProperties");
-
-var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-
-var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require("babel-runtime/helpers/createClass");
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require("babel-runtime/helpers/possibleConstructorReturn");
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require("babel-runtime/helpers/inherits");
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require("prop-types");
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _EditorCore = require("./components/core/EditorCore");
-
-var _EditorCore2 = _interopRequireDefault(_EditorCore);
-
-var _EditorEventEmitter = require("./utils/EditorEventEmitter");
-
-var _EditorEventEmitter2 = _interopRequireDefault(_EditorEventEmitter);
-
-var _EditorDOM = require("./utils/EditorDOM");
-
-var _EditorDOM2 = _interopRequireDefault(_EditorDOM);
-
-var _EditorSelection = require("./utils/EditorSelection");
-
-var _EditorSelection2 = _interopRequireDefault(_EditorSelection);
-
-var _Dialog = require("./components/base/Dialog");
-
-var _Dialog2 = _interopRequireDefault(_Dialog);
-
-require("./less/editor.less");
-
-require("./utils/Date.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-exports.EditorDOM = _EditorDOM2["default"];
-exports.EditorSelection = _EditorSelection2["default"];
-exports.Dialog = _Dialog2["default"];
+export { EditorDOM, EditorSelection, Dialog };
 
 var App = function (_React$Component) {
-  (0, _inherits3["default"])(App, _React$Component);
+  _inherits(App, _React$Component);
 
   function App(props) {
-    (0, _classCallCheck3["default"])(this, App);
+    _classCallCheck(this, App);
 
-    var _this = (0, _possibleConstructorReturn3["default"])(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.handleChange = function () {
       _this.setState({
@@ -88,17 +38,17 @@ var App = function (_React$Component) {
     return _this;
   }
 
-  (0, _createClass3["default"])(App, [{
+  _createClass(App, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.index = _EditorEventEmitter2["default"].editorIndex;
-      _EditorEventEmitter2["default"].addStartListener("start-" + this.index, this.handleChange);
+      this.index = EditorEventEmitter.editorIndex;
+      EditorEventEmitter.addStartListener("start-" + this.index, this.handleChange);
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       var index = this.index;
-      _EditorEventEmitter2["default"].removeStartListener("start-" + index, this.handleChange);
+      EditorEventEmitter.removeStartListener("start-" + index, this.handleChange);
     }
   }, {
     key: "componentDidUpdate",
@@ -110,7 +60,7 @@ var App = function (_React$Component) {
   }, {
     key: "handleMountSuccess",
     value: function handleMountSuccess() {
-      _EditorEventEmitter2["default"].mountEditorSuccess();
+      EditorEventEmitter.mountEditorSuccess();
     }
   }, {
     key: "shouldComponentUpdate",
@@ -151,13 +101,14 @@ var App = function (_React$Component) {
     key: "render",
     value: function render() {
       var loaded = this.state.loaded;
+
       var _props = this.props,
           value = _props.value,
           defaultValue = _props.defaultValue,
-          props = (0, _objectWithoutProperties3["default"])(_props, ["value", "defaultValue"]);
+          props = _objectWithoutProperties(_props, ["value", "defaultValue"]);
 
       if (!this.state.loaded) {
-        return _react2["default"].createElement(
+        return React.createElement(
           "div",
           {
             id: props.id,
@@ -167,7 +118,7 @@ var App = function (_React$Component) {
           "\u6B63\u5728\u52A0\u8F7D..."
         );
       } else {
-        return _react2["default"].createElement(_EditorCore2["default"], (0, _extends3["default"])({
+        return React.createElement(EditorCore, _extends({
           ref: "editor"
         }, props, {
           onEditorMount: this.handleMountSuccess
@@ -175,20 +126,21 @@ var App = function (_React$Component) {
       }
     }
   }]);
-  return App;
-}(_react2["default"].Component);
 
-exports["default"] = App;
+  return App;
+}(React.Component);
+
+export default App;
 
 
 App.propTypes = {
-  plugins: _propTypes2["default"].object,
-  fontFamily: _propTypes2["default"].array,
-  fontSize: _propTypes2["default"].array,
-  paragraph: _propTypes2["default"].array,
-  icons: _propTypes2["default"].arrayOf(_propTypes2["default"].string),
-  value: _propTypes2["default"].string,
-  defaultValue: _propTypes2["default"].string
+  plugins: PropTypes.object,
+  fontFamily: PropTypes.array,
+  fontSize: PropTypes.array,
+  paragraph: PropTypes.array,
+  icons: PropTypes.arrayOf(PropTypes.string),
+  value: PropTypes.string,
+  defaultValue: PropTypes.string
 };
 
 App.defaultProps = {

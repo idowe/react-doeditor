@@ -6,7 +6,7 @@ import EditorDOM from "./utils/EditorDOM";
 import EditorSelection from "./utils/EditorSelection";
 import Dialog from "./components/base/Dialog";
 
-import "../less/editor.less";
+import "./less/editor.less";
 import "./utils/Date.js";
 
 export { EditorDOM, EditorSelection, Dialog };

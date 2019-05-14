@@ -1,122 +1,38 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _objectWithoutProperties2 = require("babel-runtime/helpers/objectWithoutProperties");
-
-var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-
-var _extends2 = require("babel-runtime/helpers/extends");
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require("babel-runtime/helpers/createClass");
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require("babel-runtime/helpers/possibleConstructorReturn");
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require("babel-runtime/helpers/inherits");
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require("react-dom");
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _EditorHistory = require("../../utils/EditorHistory");
-
-var _EditorHistory2 = _interopRequireDefault(_EditorHistory);
-
-var _EditorSelection = require("../../utils/EditorSelection");
-
-var _EditorSelection2 = _interopRequireDefault(_EditorSelection);
-
-var _EditorDom = require("../../utils/EditorDom");
-
-var _EditorDom2 = _interopRequireDefault(_EditorDom);
-
-var _EditorTimer = require("../../utils/EditorTimer");
-
-var _EditorTimer2 = _interopRequireDefault(_EditorTimer);
-
-var _ColorDropdown = require("../plugins/ColorDropdown");
-
-var _ColorDropdown2 = _interopRequireDefault(_ColorDropdown);
-
-var _FormulaDropdown = require("../plugins/FormulaDropdown");
-
-var _FormulaDropdown2 = _interopRequireDefault(_FormulaDropdown);
-
-var _TablePickerDropdown = require("../plugins/TablePickerDropdown");
-
-var _TablePickerDropdown2 = _interopRequireDefault(_TablePickerDropdown);
-
-var _FontSizeComboBox = require("../plugins/FontSizeComboBox");
-
-var _FontSizeComboBox2 = _interopRequireDefault(_FontSizeComboBox);
-
-var _FontFamilyComboBox = require("../plugins/FontFamilyComboBox");
-
-var _FontFamilyComboBox2 = _interopRequireDefault(_FontFamilyComboBox);
-
-var _ParagraphComboBox = require("../plugins/ParagraphComboBox");
-
-var _ParagraphComboBox2 = _interopRequireDefault(_ParagraphComboBox);
-
-var _EmotionDialog = require("../plugins/EmotionDialog");
-
-var _EmotionDialog2 = _interopRequireDefault(_EmotionDialog);
-
-var _SpecialCharsDialog = require("../plugins/SpecialCharsDialog");
-
-var _SpecialCharsDialog2 = _interopRequireDefault(_SpecialCharsDialog);
-
-var _ImageDialog = require("../plugins/ImageDialog");
-
-var _ImageDialog2 = _interopRequireDefault(_ImageDialog);
-
-var _EditorToolbar = require("./EditorToolbar");
-
-var _EditorToolbar2 = _interopRequireDefault(_EditorToolbar);
-
-var _EditorTextArea = require("./EditorTextArea");
-
-var _EditorTextArea2 = _interopRequireDefault(_EditorTextArea);
-
-var _EditorContentEditableDiv = require("./EditorContentEditableDiv");
-
-var _EditorContentEditableDiv2 = _interopRequireDefault(_EditorContentEditableDiv);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-// key down context
-
-// dialog
-
-
-// dialog & dropdown
-
+import _objectWithoutProperties from "babel-runtime/helpers/objectWithoutProperties";
+import _extends from "babel-runtime/helpers/extends";
+import _classCallCheck from "babel-runtime/helpers/classCallCheck";
+import _createClass from "babel-runtime/helpers/createClass";
+import _possibleConstructorReturn from "babel-runtime/helpers/possibleConstructorReturn";
+import _inherits from "babel-runtime/helpers/inherits";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
 // utlils
-var saveSceneTimer = null;
+import EditorHistory from "../../utils/EditorHistory";
+import EditorSelection from "../../utils/EditorSelection";
+import EditorDom from "../../utils/EditorDom";
+import EditorTimer from "../../utils/EditorTimer";
+
+// dialog & dropdown
+import ColorDropdown from "../plugins/ColorDropdown";
+import FormulaDropdown from "../plugins/FormulaDropdown";
+import TablePickerDropdown from "../plugins/TablePickerDropdown";
+// combobox
+import FontSizeComboBox from "../plugins/FontSizeComboBox";
+import FontFamilyComboBox from "../plugins/FontFamilyComboBox";
+import ParagraphComboBox from "../plugins/ParagraphComboBox";
+// dialog
+import EmotionDialog from "../plugins/EmotionDialog";
+import SpecialCharsDialog from "../plugins/SpecialCharsDialog";
+import ImageDialog from "../plugins/ImageDialog";
 
 // base components
+import EditorToolbar from "./EditorToolbar";
+import EditorTextArea from "./EditorTextArea";
+import EditorContentEditableDiv from "./EditorContentEditableDiv";
 
-// combobox
-
+// key down context
+var saveSceneTimer = null;
 var keycont = 0;
 
 var MQ = null;
@@ -134,12 +50,12 @@ var MQ = null;
  **/
 
 var EditorCore = function (_Component) {
-  (0, _inherits3["default"])(EditorCore, _Component);
+  _inherits(EditorCore, _Component);
 
   function EditorCore(props) {
-    (0, _classCallCheck3["default"])(this, EditorCore);
+    _classCallCheck(this, EditorCore);
 
-    var _this = (0, _possibleConstructorReturn3["default"])(this, (EditorCore.__proto__ || Object.getPrototypeOf(EditorCore)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (EditorCore.__proto__ || Object.getPrototypeOf(EditorCore)).call(this, props));
 
     _this.handleKeyDown = function (evt) {
       evt = evt || event;
@@ -149,16 +65,16 @@ var EditorCore = function (_Component) {
       if (target.className && target.className.indexOf("editor-contenteditable-div") != -1) {
         var keyCode = evt.keyCode || evt.which;
         if (!evt.ctrlKey && !evt.metaKey && !evt.shiftKey && !evt.altKey) {
-          if (_EditorHistory2["default"].getCommandStack().length == 0) {
+          if (EditorHistory.getCommandStack().length == 0) {
             _this.autoSave();
             keycont = 0;
           }
           clearTimeout(saveSceneTimer);
-          saveSceneTimer = _EditorTimer2["default"].setTimeout(function () {
-            var interalTimer = _EditorTimer2["default"].setInterval(function () {
+          saveSceneTimer = EditorTimer.setTimeout(function () {
+            var interalTimer = EditorTimer.setInterval(function () {
               _this.autoSave();
               keycont = 0;
-              _EditorTimer2["default"].clearInterval(interalTimer);
+              EditorTimer.clearInterval(interalTimer);
             }, 300);
           }, 200);
           lastKeyCode = keyCode;
@@ -169,7 +85,7 @@ var EditorCore = function (_Component) {
           }
         }
       }
-      _EditorDom2["default"].stopPropagation(evt);
+      EditorDom.stopPropagation(evt);
     };
 
     _this.handleKeyUp = function (evt) {
@@ -180,7 +96,7 @@ var EditorCore = function (_Component) {
           // some handle
         }
       }
-      _EditorDom2["default"].stopPropagation(evt);
+      EditorDom.stopPropagation(evt);
     };
 
     _this.editorSource = function (state) {
@@ -191,9 +107,9 @@ var EditorCore = function (_Component) {
     };
 
     _this.editorRemoveFormat = function (state) {
-      _EditorHistory2["default"].execCommand(state.icon, false, null);
-      _EditorSelection2["default"].storeRange();
-      var spanNodes = _EditorSelection2["default"].getSpanNodes();
+      EditorHistory.execCommand(state.icon, false, null);
+      EditorSelection.storeRange();
+      var spanNodes = EditorSelection.getSpanNodes();
       var spanNode = null;
       var parentNode = null;
       var nextSibling = null;
@@ -222,12 +138,12 @@ var EditorCore = function (_Component) {
             break;
         }
       }
-      _EditorSelection2["default"].restoreRange();
+      EditorSelection.restoreRange();
     };
 
     _this.editorUpLowCase = function (state) {
-      _EditorSelection2["default"].storeRange();
-      var textNodes = _EditorSelection2["default"].getTextNodes();
+      EditorSelection.storeRange();
+      var textNodes = EditorSelection.getTextNodes();
       var node = null;
       var start = null;
       var end = null;
@@ -237,12 +153,12 @@ var EditorCore = function (_Component) {
         end = textNodes[i].endOffset;
         node.nodeValue = node.nodeValue.substring(0, start) + (state.icon == "touppercase" ? node.nodeValue.substring(start, end).toUpperCase() : node.nodeValue.substring(start, end).toLowerCase()) + node.nodeValue.substring(end, node.length);
       }
-      _EditorHistory2["default"].execCommand(state.icon, false, null);
-      _EditorSelection2["default"].restoreRange();
+      EditorHistory.execCommand(state.icon, false, null);
+      EditorSelection.restoreRange();
     };
 
     _this.editorFontBorder = function (state) {
-      var textNodes = _EditorSelection2["default"].getTextNodes();
+      var textNodes = EditorSelection.getTextNodes();
       var startNode = null,
           endNode = null,
           startOffset = 0,
@@ -286,13 +202,13 @@ var EditorCore = function (_Component) {
           }
         }
       }
-      _EditorSelection2["default"].addRange(startNode, startOffset, endNode, endOffset);
+      EditorSelection.addRange(startNode, startOffset, endNode, endOffset);
       // 合并相同font-border元素
-      var spanNodes = _EditorSelection2["default"].getSpanNodes();
+      var spanNodes = EditorSelection.getSpanNodes();
       for (var _i = 0; _i < spanNodes.length - 1; _i++) {
         var spanNode = spanNodes[_i];
         var parentNode = spanNodes[_i].parentNode;
-        if (_EditorDom2["default"].isNullOfTextNode(spanNode.nextSibling)) {
+        if (EditorDom.isNullOfTextNode(spanNode.nextSibling)) {
           // 移除空元素
           parentNode.removeChild(spanNode.nextSibling);
         }
@@ -307,11 +223,11 @@ var EditorCore = function (_Component) {
           spanNodes[_i + 1] = spanNodes[_i];
         }
       }
-      _EditorHistory2["default"].execCommand(state.icon, false, null);
+      EditorHistory.execCommand(state.icon, false, null);
     };
 
     _this.editorEmphasis = function (state) {
-      var textNodes = _EditorSelection2["default"].getTextNodes();
+      var textNodes = EditorSelection.getTextNodes();
       var startNode = null,
           endNode = null,
           startOffset = 0,
@@ -354,14 +270,14 @@ var EditorCore = function (_Component) {
           }
         }
       }
-      _EditorSelection2["default"].addRange(startNode, startOffset, endNode, endOffset);
+      EditorSelection.addRange(startNode, startOffset, endNode, endOffset);
       // 合并相同font-border元素
-      var spanNodes = _EditorSelection2["default"].getSpanNodes();
+      var spanNodes = EditorSelection.getSpanNodes();
       for (var _i2 = 0; _i2 < spanNodes.length - 1; _i2++) {
         var spanNode = spanNodes[_i2];
         var parentNode = spanNodes[_i2].parentNode;
 
-        if (_EditorDom2["default"].isNullOfTextNode(spanNode.nextSibling)) {
+        if (EditorDom.isNullOfTextNode(spanNode.nextSibling)) {
           // 移除空元素
           parentNode.removeChild(spanNode.nextSibling);
         }
@@ -376,64 +292,64 @@ var EditorCore = function (_Component) {
           spanNodes[_i2 + 1] = spanNodes[_i2];
         }
       }
-      _EditorHistory2["default"].execCommand(state.icon, false, null);
+      EditorHistory.execCommand(state.icon, false, null);
     };
 
     _this.editorForeColor = function (state, offsetPosition, editarea) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       offsetPosition.y += offsetPosition.h + 5;
       _this.refs.color.toggle(offsetPosition, function (color) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
-        _EditorHistory2["default"].execCommand("forecolor", false, color);
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
+        EditorHistory.execCommand("forecolor", false, color);
         _this.handleRangeChange();
       });
     };
 
     _this.editorBackColor = function (state, offsetPosition, editarea) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       offsetPosition.y += offsetPosition.h + 5;
 
       _this.refs.color.toggle(offsetPosition, function (color) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
-        _EditorHistory2["default"].execCommand("backcolor", false, color);
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
+        EditorHistory.execCommand("backcolor", false, color);
         _this.handleRangeChange();
       });
     };
 
     _this.editorFontSize = function (state, offsetPosition, editarea) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       offsetPosition.y += offsetPosition.h + 5;
 
       _this.refs.fontsize.toggle(offsetPosition, function (fontsize) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
-        _EditorHistory2["default"].execCommand("fontsize", false, fontsize);
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
+        EditorHistory.execCommand("fontsize", false, fontsize);
         _this.handleRangeChange();
       });
     };
 
     _this.editorFontFamily = function (state, offsetPosition, editarea) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       offsetPosition.y += offsetPosition.h + 5;
 
       _this.refs.fontfamily.toggle(offsetPosition, function (fontfamily) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
-        _EditorHistory2["default"].execCommand("fontname", false, fontfamily);
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
+        EditorHistory.execCommand("fontname", false, fontfamily);
         _this.handleRangeChange();
       });
     };
 
     _this.editorParagraph = function (state, offsetPosition, editarea) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       offsetPosition.y += offsetPosition.h + 5;
 
       _this.refs.paragraph.toggle(offsetPosition, function (paragraph) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
-        var paragraphs = _EditorSelection2["default"].getParagraphs();
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
+        var paragraphs = EditorSelection.getParagraphs();
         var parentElement = null,
             childNodes = null,
             paraElement = null,
@@ -471,22 +387,22 @@ var EditorCore = function (_Component) {
               break;
           }
         }
-        _EditorHistory2["default"].execCommand("paragraph", false, paragraph);
+        EditorHistory.execCommand("paragraph", false, paragraph);
         _this.handleRangeChange();
       });
     };
 
     _this.editorHorizontal = function (editarea, root) {
       var strTime = "<hr/><p></br></p>";
-      if (_EditorSelection2["default"].range && _EditorSelection2["default"].validateRange(root, _EditorSelection2["default"].range)) {
-        if (_EditorSelection2["default"].range.pasteHTML) {
-          _EditorSelection2["default"].range.pasteHTML(strTime);
+      if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+        if (EditorSelection.range.pasteHTML) {
+          EditorSelection.range.pasteHTML(strTime);
         } else {
-          var hr = _EditorDom2["default"].createHR();
-          var p = _EditorDom2["default"].createNodeByTag("p", "<br/>");
-          _EditorSelection2["default"].range.deleteContents();
-          _EditorSelection2["default"].insertNode(p);
-          _EditorSelection2["default"].insertNode(hr);
+          var hr = EditorDom.createHR();
+          var p = EditorDom.createNodeByTag("p", "<br/>");
+          EditorSelection.range.deleteContents();
+          EditorSelection.insertNode(p);
+          EditorSelection.insertNode(hr);
         }
       } else {
         editarea.innerHTML += strTime;
@@ -495,9 +411,9 @@ var EditorCore = function (_Component) {
     };
 
     _this.editorJustify = function (editarea, root) {
-      if (_EditorSelection2["default"].range && _EditorSelection2["default"].validateRange(root, _EditorSelection2["default"].range)) {
-        console.log(_EditorSelection2["default"].range);
-        var nodeContent = _EditorSelection2["default"].range.cloneContents();
+      if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+        console.log(EditorSelection.range);
+        var nodeContent = EditorSelection.range.cloneContents();
         console.log(nodeContent);
         var nodeContentList = nodeContent.querySelectorAll("p");
         console.log(nodeContentList);
@@ -507,26 +423,26 @@ var EditorCore = function (_Component) {
             nodeContentList[index].style.textAlign = "justify";
             p.appendChild(nodeContentList[index]);
           });
-          _EditorSelection2["default"].range.deleteContents();
-          _EditorSelection2["default"].insertNode(p);
+          EditorSelection.range.deleteContents();
+          EditorSelection.insertNode(p);
         } else {
           p.appendChild(nodeContent);
           p.style.textAlign = "justify";
-          _EditorSelection2["default"].range.deleteContents();
-          _EditorSelection2["default"].insertNode(p);
+          EditorSelection.range.deleteContents();
+          EditorSelection.insertNode(p);
         }
       }
     };
 
     _this.editorDate = function (editarea, root) {
       var strDate = new Date().Format("yyyy-MM-dd");
-      if (_EditorSelection2["default"].range && _EditorSelection2["default"].validateRange(root, _EditorSelection2["default"].range)) {
-        if (_EditorSelection2["default"].range.pasteHTML) {
-          _EditorSelection2["default"].range.pasteHTML(strDate);
+      if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+        if (EditorSelection.range.pasteHTML) {
+          EditorSelection.range.pasteHTML(strDate);
         } else {
-          var textNode = _EditorDom2["default"].createTextNode(strDate);
-          _EditorSelection2["default"].range.deleteContents();
-          _EditorSelection2["default"].insertNode(textNode);
+          var textNode = EditorDom.createTextNode(strDate);
+          EditorSelection.range.deleteContents();
+          EditorSelection.insertNode(textNode);
         }
       } else {
         editarea.innerHTML += "<p>" + strDate + "</p>";
@@ -536,13 +452,13 @@ var EditorCore = function (_Component) {
 
     _this.editorTime = function (editarea, root) {
       var strTime = new Date().Format("hh:mm:ss");
-      if (_EditorSelection2["default"].range && _EditorSelection2["default"].validateRange(root, _EditorSelection2["default"].range)) {
-        if (_EditorSelection2["default"].range.pasteHTML) {
-          _EditorSelection2["default"].range.pasteHTML(strTime);
+      if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+        if (EditorSelection.range.pasteHTML) {
+          EditorSelection.range.pasteHTML(strTime);
         } else {
-          var textNode = _EditorDom2["default"].createTextNode(strTime);
-          _EditorSelection2["default"].range.deleteContents();
-          _EditorSelection2["default"].insertNode(textNode);
+          var textNode = EditorDom.createTextNode(strTime);
+          EditorSelection.range.deleteContents();
+          EditorSelection.insertNode(textNode);
         }
       } else {
         editarea.innerHTML += "<p>" + strTime + "</p>";
@@ -551,18 +467,18 @@ var EditorCore = function (_Component) {
     };
 
     _this.editorImage = function (editarea, root) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       _this.refs.image.toggle(function (html) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
         if (html && html.length > 0) {
-          if (_EditorSelection2["default"].range && _EditorSelection2["default"].validateRange(root, _EditorSelection2["default"].range)) {
-            if (_EditorSelection2["default"].range.pasteHTML) {
-              _EditorSelection2["default"].range.pasteHTML("<p>" + html + "</p>");
+          if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+            if (EditorSelection.range.pasteHTML) {
+              EditorSelection.range.pasteHTML("<p>" + html + "</p>");
             } else {
-              var p = _EditorDom2["default"].createNodeByTag("p", html);
-              _EditorSelection2["default"].range.deleteContents();
-              _EditorSelection2["default"].insertNode(p);
+              var p = EditorDom.createNodeByTag("p", html);
+              EditorSelection.range.deleteContents();
+              EditorSelection.insertNode(p);
             }
             // EditorHistory.execCommand('inserthtml',false,html);
           } else {
@@ -573,28 +489,28 @@ var EditorCore = function (_Component) {
     };
 
     _this.editorFormula = function (editarea, root, offsetPosition) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       offsetPosition.y += offsetPosition.h + 5;
       offsetPosition.x -= offsetPosition.w / 2;
       _this.refs.formula.toggle(offsetPosition, function (latex, id) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
 
         if (latex && latex.length > 0) {
           var html = '<span>&nbsp;<span class="mathquill-embedded-latex" id="' + id + '"></span>&nbsp;</span>';
-          if (_EditorSelection2["default"].range && _EditorSelection2["default"].validateRange(root, _EditorSelection2["default"].range)) {
-            if (_EditorSelection2["default"].range.pasteHTML) {
-              _EditorSelection2["default"].range.pasteHTML(html);
+          if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+            if (EditorSelection.range.pasteHTML) {
+              EditorSelection.range.pasteHTML(html);
             } else {
-              var span = _EditorDom2["default"].createNodeByTag("span", '&nbsp;<span class="mathquill-embedded-latex" id="' + id + '"></span>&nbsp;');
-              _EditorSelection2["default"].range.deleteContents();
-              _EditorSelection2["default"].insertNode(span);
+              var span = EditorDom.createNodeByTag("span", '&nbsp;<span class="mathquill-embedded-latex" id="' + id + '"></span>&nbsp;');
+              EditorSelection.range.deleteContents();
+              EditorSelection.insertNode(span);
             }
             // EditorHistory.execCommand('inserthtml',false,html);
           } else {
             editarea.innerHTML += html;
           }
-          _EditorTimer2["default"].setTimeout(function () {
+          EditorTimer.setTimeout(function () {
             _this.addFormula(id, latex);
           }, 200);
           _this.handleRangeChange();
@@ -603,18 +519,18 @@ var EditorCore = function (_Component) {
     };
 
     _this.editorInsertTable = function (editarea, root, offsetPosition) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       offsetPosition.y += offsetPosition.h + 5;
       offsetPosition.x -= offsetPosition.w / 2;
       _this.refs.table.toggle(offsetPosition, function (table) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
-        if (_EditorSelection2["default"].range && _EditorSelection2["default"].validateRange(root, _EditorSelection2["default"].range)) {
-          if (_EditorSelection2["default"].range.pasteHTML) {
-            _EditorSelection2["default"].range.pasteHTML(table.outerHTML);
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
+        if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+          if (EditorSelection.range.pasteHTML) {
+            EditorSelection.range.pasteHTML(table.outerHTML);
           } else {
-            _EditorSelection2["default"].range.deleteContents();
-            _EditorSelection2["default"].insertNode(table);
+            EditorSelection.range.deleteContents();
+            EditorSelection.insertNode(table);
           }
         } else {
           editarea.innerHTML += table.outerHTML;
@@ -625,17 +541,17 @@ var EditorCore = function (_Component) {
     };
 
     _this.editorSpechars = function (editarea, root) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       _this.refs.special.toggle(function (char) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
-        if (_EditorSelection2["default"].range && _EditorSelection2["default"].validateRange(root, _EditorSelection2["default"].range)) {
-          if (_EditorSelection2["default"].range.pasteHTML) {
-            _EditorSelection2["default"].range.pasteHTML(char);
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
+        if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+          if (EditorSelection.range.pasteHTML) {
+            EditorSelection.range.pasteHTML(char);
           } else {
-            var textNode = _EditorDom2["default"].createTextNode(char);
-            _EditorSelection2["default"].range.deleteContents();
-            _EditorSelection2["default"].insertNode(textNode);
+            var textNode = EditorDom.createTextNode(char);
+            EditorSelection.range.deleteContents();
+            EditorSelection.insertNode(textNode);
           }
         } else {
           editarea.innerHTML += char;
@@ -646,16 +562,16 @@ var EditorCore = function (_Component) {
     };
 
     _this.editorEmotion = function (editarea, root) {
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.storeRange();
       _this.refs.emotion.toggle(function (img) {
-        _EditorDom2["default"].focusNode(editarea);
-        _EditorSelection2["default"].restoreRange();
-        if (_EditorSelection2["default"].range && _EditorSelection2["default"].validateRange(root, _EditorSelection2["default"].range)) {
-          if (_EditorSelection2["default"].range.pasteHTML) {
-            _EditorSelection2["default"].range.pasteHTML(img.outerHTML);
+        EditorDom.focusNode(editarea);
+        EditorSelection.restoreRange();
+        if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+          if (EditorSelection.range.pasteHTML) {
+            EditorSelection.range.pasteHTML(img.outerHTML);
           } else {
-            _EditorSelection2["default"].range.deleteContents();
-            _EditorSelection2["default"].insertNode(img);
+            EditorSelection.range.deleteContents();
+            EditorSelection.insertNode(img);
           }
         } else {
           editarea.innerHTML += img.outerHTML;
@@ -708,10 +624,10 @@ var EditorCore = function (_Component) {
     return _this;
   }
 
-  (0, _createClass3["default"])(EditorCore, [{
+  _createClass(EditorCore, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      _EditorHistory2["default"].clear();
+      EditorHistory.clear();
       this.setContent(this.state.value);
     }
   }, {
@@ -728,7 +644,7 @@ var EditorCore = function (_Component) {
           }
           setTimeout(function () {
             _this2.setState({
-              editorState: (0, _extends3["default"])({}, editorState, { icon: "" })
+              editorState: _extends({}, editorState, { icon: "" })
             });
           });
           break;
@@ -743,17 +659,17 @@ var EditorCore = function (_Component) {
       if (this.props.onFocus) {
         this.props.onFocus(e, this.findDOMNode("root"));
       }
-      _EditorDom2["default"].stopPropagation(e);
+      EditorDom.stopPropagation(e);
     }
   }, {
     key: "handleClick",
     value: function handleClick(e) {
-      _EditorDom2["default"].stopPropagation(e);
+      EditorDom.stopPropagation(e);
     }
   }, {
     key: "exchangeRangeState",
     value: function exchangeRangeState(editorState) {
-      var rangeState = _EditorSelection2["default"].getRangeState();
+      var rangeState = EditorSelection.getRangeState();
       for (var icon in rangeState) {
         if (!editorState.icons[icon]) editorState.icons[icon] = rangeState[icon];else {
           switch (icon) {
@@ -794,7 +710,7 @@ var EditorCore = function (_Component) {
       // 已经被卸载了。
       if (this._calledComponentWillUnmount) return;
       var target = e ? e.target || e.srcElement : null;
-      var selection = _EditorSelection2["default"].getSelection();
+      var selection = EditorSelection.getSelection();
       if (this.props.onChange) {
         var content = this.getContent();
         var value = this.state.value;
@@ -813,8 +729,8 @@ var EditorCore = function (_Component) {
             editorState: editorState
           });
         } else {
-          var parentNode = _EditorSelection2["default"].validateSelection(selection);
-          if (parentNode && _EditorDom2["default"].isEditorDom(parentNode, _reactDom2["default"].findDOMNode(this.refs.root))) {
+          var parentNode = EditorSelection.validateSelection(selection);
+          if (parentNode && EditorDom.isEditorDom(parentNode, ReactDOM.findDOMNode(this.refs.root))) {
             editorState = this.exchangeRangeState(editorState);
             this.setState({
               editorState: editorState
@@ -824,7 +740,7 @@ var EditorCore = function (_Component) {
             }
           }
         }
-      } else if (target && _EditorDom2["default"].isEditorDom(target, _reactDom2["default"].findDOMNode(this.refs.root))) {
+      } else if (target && EditorDom.isEditorDom(target, ReactDOM.findDOMNode(this.refs.root))) {
         var tagName = target.tagName.toUpperCase();
         switch (tagName) {
           case "IMG":
@@ -845,29 +761,29 @@ var EditorCore = function (_Component) {
     value: function handleToolbarIconClick(e, state) {
       e = e || event;
       var target = e.target || e.srcElement;
-      var root = _reactDom2["default"].findDOMNode(this.refs.root);
-      var offsetPosition = _EditorDom2["default"].getOffsetRootParentPosition(target, root);
+      var root = ReactDOM.findDOMNode(this.refs.root);
+      var offsetPosition = EditorDom.getOffsetRootParentPosition(target, root);
 
       var handleRangeChange = this.handleRangeChange.bind(this);
-      var editarea = _reactDom2["default"].findDOMNode(this.refs.editarea);
+      var editarea = ReactDOM.findDOMNode(this.refs.editarea);
       if (this.refs.editarea.getEditorRange) {
         editarea = this.refs.editarea.getEditorRange();
       }
       var editorState = this.state.editorState;
-      _EditorSelection2["default"].cloneRange();
-      _EditorSelection2["default"].storeRange();
+      EditorSelection.cloneRange();
+      EditorSelection.storeRange();
       //关闭所有Dialog、Box、Dropdown
       this.closeAllOpenDialog(state.icon);
-      _EditorSelection2["default"].restoreRange();
+      EditorSelection.restoreRange();
       switch (state.icon) {
         case "source":
           this.editorSource(state);
           break;
         case "undo":
-          _EditorHistory2["default"].undo();
+          EditorHistory.undo();
           break;
         case "redo":
-          _EditorHistory2["default"].redo();
+          EditorHistory.redo();
           break;
         case "removeformat":
           this.editorRemoveFormat(state);
@@ -886,7 +802,7 @@ var EditorCore = function (_Component) {
         case "justifycenter":
         case "indent":
         case "outdent":
-          _EditorHistory2["default"].execCommand(state.icon, false, null);
+          EditorHistory.execCommand(state.icon, false, null);
           break;
         case "justifyjustify":
           this.editorJustify(editarea, root);
@@ -964,11 +880,11 @@ var EditorCore = function (_Component) {
       // setState
       editorState.icons[state.icon] = state;
       editorState.icon = state.icon;
-      _EditorSelection2["default"].createRange();
+      EditorSelection.createRange();
 
       // range state
       handleRangeChange();
-      _EditorDom2["default"].stopPropagation(e);
+      EditorDom.stopPropagation(e);
     }
   }, {
     key: "closeAllOpenDialog",
@@ -985,7 +901,7 @@ var EditorCore = function (_Component) {
   }, {
     key: "addFormula",
     value: function addFormula(id, latex) {
-      var editarea = _reactDom2["default"].findDOMNode(this.refs.editarea);
+      var editarea = ReactDOM.findDOMNode(this.refs.editarea);
       var htmlElement = document.getElementById(id);
 
       var config = {
@@ -1003,34 +919,34 @@ var EditorCore = function (_Component) {
       var $htmlElement = $(htmlElement);
       $htmlElement.keydown(function (e) {
         mathField.focus();
-        _EditorDom2["default"].stopPropagation(e);
+        EditorDom.stopPropagation(e);
       });
       $htmlElement.keyup(function (e) {
         mathField.focus();
-        _EditorDom2["default"].stopPropagation(e);
+        EditorDom.stopPropagation(e);
       });
       $htmlElement.mouseup(function (e) {
         mathField.focus();
-        _EditorDom2["default"].stopPropagation(e);
+        EditorDom.stopPropagation(e);
       });
       $htmlElement.mousedown(function (e) {
-        _EditorDom2["default"].stopPropagation(e);
+        EditorDom.stopPropagation(e);
       });
       $htmlElement.mousemove(function (e) {
-        _EditorDom2["default"].stopPropagation(e);
+        EditorDom.stopPropagation(e);
       });
       $(editarea).mousedown(function (e) {
         mathField.blur();
-        _EditorDom2["default"].stopPropagation(e);
+        EditorDom.stopPropagation(e);
       });
       $(editarea).mousemove(function (e) {
-        _EditorDom2["default"].stopPropagation(e);
+        EditorDom.stopPropagation(e);
       });
     }
   }, {
     key: "autoSave",
     value: function autoSave() {
-      _EditorHistory2["default"].execCommand("autosave", false, null);
+      EditorHistory.execCommand("autosave", false, null);
     }
     // public functions
 
@@ -1045,7 +961,7 @@ var EditorCore = function (_Component) {
       };
       return {
         ref: this.refs[refName],
-        dom: _reactDom2["default"].findDOMNode(this.refs[refName])
+        dom: ReactDOM.findDOMNode(this.refs[refName])
       };
     }
   }, {
@@ -1057,8 +973,8 @@ var EditorCore = function (_Component) {
       // mathquill supports
       if (content.indexOf("mathquill-embedded-latex") != -1) {
         var _self = this;
-        _EditorTimer2["default"].setTimeout(function () {
-          var editarea = _reactDom2["default"].findDOMNode(_self.refs.editarea);
+        EditorTimer.setTimeout(function () {
+          var editarea = ReactDOM.findDOMNode(_self.refs.editarea);
           var elements = editarea.querySelectorAll(".mathquill-embedded-latex");
           for (var i = 0; i < elements.length; i++) {
             if (!elements[i].id) {
@@ -1079,8 +995,8 @@ var EditorCore = function (_Component) {
   }, {
     key: "focusEditor",
     value: function focusEditor() {
-      var editarea = _reactDom2["default"].findDOMNode(this.refs.editarea);
-      _EditorDom2["default"].focusNode(editarea);
+      var editarea = ReactDOM.findDOMNode(this.refs.editarea);
+      EditorDom.focusNode(editarea);
     }
     // render functions
 
@@ -1089,12 +1005,12 @@ var EditorCore = function (_Component) {
     value: function renderEditArea() {
       var showHtml = this.state.editorState.showHtml;
       if (showHtml) {
-        return _react2["default"].createElement(_EditorTextArea2["default"], {
+        return React.createElement(EditorTextArea, {
           ref: "editarea",
           onChange: this.handleChange.bind(this)
         });
       } else {
-        return _react2["default"].createElement(_EditorContentEditableDiv2["default"], {
+        return React.createElement(EditorContentEditableDiv, {
           ref: "editarea",
           handleKeyDown: this.handleKeyDown,
           handleKeyUp: this.handleKeyUp,
@@ -1109,6 +1025,7 @@ var EditorCore = function (_Component) {
       var _this3 = this;
 
       var editArea = this.renderEditArea();
+
       var _props = this.props,
           index = _props.index,
           fontSize = _props.fontSize,
@@ -1124,7 +1041,7 @@ var EditorCore = function (_Component) {
           onChange = _props.onChange,
           onEditorMount = _props.onEditorMount,
           uploadImageCallback = _props.uploadImageCallback,
-          props = (0, _objectWithoutProperties3["default"])(_props, ["index", "fontSize", "paragraph", "fontFamily", "icons", "plugins", "onBlur", "className", "id", "onFocus", "onClick", "onChange", "onEditorMount", "uploadImageCallback"]);
+          props = _objectWithoutProperties(_props, ["index", "fontSize", "paragraph", "fontFamily", "icons", "plugins", "onBlur", "className", "id", "onFocus", "onClick", "onChange", "onEditorMount", "uploadImageCallback"]);
 
       var editorState = this.state.editorState;
       var _icons = icons.join(" ").replace(/\|/gm, "separator").split(" ");
@@ -1134,10 +1051,10 @@ var EditorCore = function (_Component) {
           toolbar = _ref2$toolbar === undefined ? {} : _ref2$toolbar;
 
       var pIcons = toolbar.icons || [];
-      _EditorSelection2["default"].customIcons = pIcons;
-      return _react2["default"].createElement(
+      EditorSelection.customIcons = pIcons;
+      return React.createElement(
         "div",
-        (0, _extends3["default"])({
+        _extends({
           ref: "root",
           id: id,
           className: "editor-container editor-default" + (className ? " " + className : ""),
@@ -1145,8 +1062,8 @@ var EditorCore = function (_Component) {
           onBlur: this.handleRangeChange.bind(this),
           onFocus: this.handleFocus.bind(this)
         }, props),
-        _react2["default"].createElement(
-          _EditorToolbar2["default"],
+        React.createElement(
+          EditorToolbar,
           {
             ref: "toolbar",
             editorState: editorState,
@@ -1159,45 +1076,45 @@ var EditorCore = function (_Component) {
             fontsize: this.props.fontSize,
             fontfamily: this.props.fontFamily
           },
-          _react2["default"].createElement(_ImageDialog2["default"], {
+          React.createElement(ImageDialog, {
             hidden: _icons.indexOf("image") == -1,
             ref: "image",
             uploader: plugins.image.uploader,
             customUploader: plugins.image.customUploader
           }),
-          _react2["default"].createElement(_ColorDropdown2["default"], {
+          React.createElement(ColorDropdown, {
             hidden: _icons.indexOf("forecolor") == -1 && _icons.indexOf("forecolor"),
             ref: "color"
           }),
-          _react2["default"].createElement(_FormulaDropdown2["default"], {
+          React.createElement(FormulaDropdown, {
             hidden: _icons.indexOf("formula") == -1,
             ref: "formula"
           }),
-          _react2["default"].createElement(_TablePickerDropdown2["default"], {
+          React.createElement(TablePickerDropdown, {
             hidden: _icons.indexOf("inserttable") == -1,
             ref: "table"
           }),
-          _react2["default"].createElement(_SpecialCharsDialog2["default"], {
+          React.createElement(SpecialCharsDialog, {
             hidden: _icons.indexOf("spechars") == -1,
             ref: "special"
           }),
-          _react2["default"].createElement(_EmotionDialog2["default"], {
+          React.createElement(EmotionDialog, {
             hidden: _icons.indexOf("emotion") == -1,
             ref: "emotion"
           }),
-          _react2["default"].createElement(_FontSizeComboBox2["default"], {
+          React.createElement(FontSizeComboBox, {
             hidden: _icons.indexOf("fontsize") == -1,
             ref: "fontsize",
             fontsize: this.props.fontSize,
             value: editorState.icons["fontsize"] ? editorState.icons["fontsize"].value : fontSize[0].value
           }),
-          _react2["default"].createElement(_FontFamilyComboBox2["default"], {
+          React.createElement(FontFamilyComboBox, {
             hidden: _icons.indexOf("fontfamily") == -1,
             ref: "fontfamily",
             fontfamily: this.props.fontFamily,
             value: editorState.icons["fontfamily"] ? editorState.icons["fontfamily"].value : fontFamily[0].value
           }),
-          _react2["default"].createElement(_ParagraphComboBox2["default"], {
+          React.createElement(ParagraphComboBox, {
             hidden: _icons.indexOf("paragraph") == -1,
             ref: "paragraph",
             paragraph: this.props.paragraph,
@@ -1207,7 +1124,7 @@ var EditorCore = function (_Component) {
             return ic.component;
           }).map(function (ic) {
             var Com = ic.component;
-            return _react2["default"].createElement(Com, (0, _extends3["default"])({
+            return React.createElement(Com, _extends({
               hidden: _icons.indexOf(ic.name) == -1,
               ref: function ref(com) {
                 return _this3.iconComponetMap[ic.name] = com;
@@ -1221,8 +1138,8 @@ var EditorCore = function (_Component) {
       );
     }
   }]);
-  return EditorCore;
-}(_react.Component);
 
-exports["default"] = EditorCore;
-module.exports = exports['default'];
+  return EditorCore;
+}(Component);
+
+export default EditorCore;

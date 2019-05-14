@@ -1,54 +1,20 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require("babel-runtime/helpers/createClass");
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require("babel-runtime/helpers/possibleConstructorReturn");
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require("babel-runtime/helpers/inherits");
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require("react-dom");
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _EditorSelection = require("../../utils/EditorSelection");
-
-var _EditorSelection2 = _interopRequireDefault(_EditorSelection);
-
-var _EditorDom = require("../../utils/EditorDom");
-
-var _EditorDom2 = _interopRequireDefault(_EditorDom);
-
-var _EditorResize = require("../../utils/EditorResize");
-
-var _EditorResize2 = _interopRequireDefault(_EditorResize);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+import _classCallCheck from "babel-runtime/helpers/classCallCheck";
+import _createClass from "babel-runtime/helpers/createClass";
+import _possibleConstructorReturn from "babel-runtime/helpers/possibleConstructorReturn";
+import _inherits from "babel-runtime/helpers/inherits";
+import React from "react";
+import ReactDOM from "react-dom";
+import EditorSelection from "../../utils/EditorSelection";
+import EditorDom from "../../utils/EditorDom";
+import EditorResize from "../../utils/EditorResize";
 
 var EditorContentEditableDiv = function (_React$Component) {
-  (0, _inherits3["default"])(EditorContentEditableDiv, _React$Component);
+  _inherits(EditorContentEditableDiv, _React$Component);
 
   function EditorContentEditableDiv(props) {
-    (0, _classCallCheck3["default"])(this, EditorContentEditableDiv);
+    _classCallCheck(this, EditorContentEditableDiv);
 
-    var _this = (0, _possibleConstructorReturn3["default"])(this, (EditorContentEditableDiv.__proto__ || Object.getPrototypeOf(EditorContentEditableDiv)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (EditorContentEditableDiv.__proto__ || Object.getPrototypeOf(EditorContentEditableDiv)).call(this, props));
 
     _this.handleWindowMouseDown = function (e) {
       e = e || event;
@@ -58,20 +24,20 @@ var EditorContentEditableDiv = function (_React$Component) {
       if (FormControls.indexOf(tagName) != -1) {
         return;
       }
-      _EditorSelection2["default"].clearRange();
+      EditorSelection.clearRange();
     };
 
     _this.handleMouseDown = function (e) {
-      _EditorSelection2["default"].clearRange();
-      _EditorDom2["default"].stopPropagation(e);
+      EditorSelection.clearRange();
+      EditorDom.stopPropagation(e);
     };
 
     _this.handleMouseUp = function (e) {
-      _EditorSelection2["default"].createRange();
+      EditorSelection.createRange();
       if (_this.props.onRangeChange) {
         _this.props.onRangeChange(e);
       }
-      _EditorDom2["default"].stopPropagation(e);
+      EditorDom.stopPropagation(e);
     };
 
     _this.state = {
@@ -80,7 +46,7 @@ var EditorContentEditableDiv = function (_React$Component) {
     return _this;
   }
 
-  (0, _createClass3["default"])(EditorContentEditableDiv, [{
+  _createClass(EditorContentEditableDiv, [{
     key: "componentDidMount",
     value: function componentDidMount() {
       window.addEventListener("keydown", this.props.handleKeyDown);
@@ -123,7 +89,7 @@ var EditorContentEditableDiv = function (_React$Component) {
   }, {
     key: "getContent",
     value: function getContent() {
-      var target = _reactDom2["default"].findDOMNode(this.refs.edit);
+      var target = ReactDOM.findDOMNode(this.refs.edit);
       return target.innerHTML;
     }
   }, {
@@ -133,7 +99,7 @@ var EditorContentEditableDiv = function (_React$Component) {
       this.setState({
         content: content
       });
-      var target = _reactDom2["default"].findDOMNode(this.refs.edit);
+      var target = ReactDOM.findDOMNode(this.refs.edit);
       target.innerHTML = content;
     }
   }, {
@@ -154,26 +120,26 @@ var EditorContentEditableDiv = function (_React$Component) {
   }, {
     key: "getEditorRange",
     value: function getEditorRange() {
-      return _reactDom2["default"].findDOMNode(this.refs.edit);
+      return ReactDOM.findDOMNode(this.refs.edit);
     }
   }, {
     key: "render",
     value: function render() {
-      return _react2["default"].createElement(
+      return React.createElement(
         "div",
         { className: "editor-contenteditable-div" },
-        _react2["default"].createElement(_EditorResize2["default"], { ref: "resize" }),
-        _react2["default"].createElement("div", {
+        React.createElement(EditorResize, { ref: "resize" }),
+        React.createElement("div", {
           className: "editable-range",
           ref: "edit",
           onMouseUp: this.handleMouseUp,
           onMouseDown: this.handleMouseDown,
           onInput: function onInput(e) {
-            _EditorSelection2["default"].selection = _EditorSelection2["default"].getSelection();
-            if (_EditorSelection2["default"].selection && _EditorSelection2["default"].selection.rangeCount > 0) {
-              _EditorSelection2["default"].range = _EditorSelection2["default"].selection.getRangeAt(0).cloneRange();
+            EditorSelection.selection = EditorSelection.getSelection();
+            if (EditorSelection.selection && EditorSelection.selection.rangeCount > 0) {
+              EditorSelection.range = EditorSelection.selection.getRangeAt(0).cloneRange();
             } else {
-              _EditorSelection2["default"].range = null;
+              EditorSelection.range = null;
             }
           },
           contentEditable: true,
@@ -182,8 +148,8 @@ var EditorContentEditableDiv = function (_React$Component) {
       );
     }
   }]);
-  return EditorContentEditableDiv;
-}(_react2["default"].Component);
 
-exports["default"] = EditorContentEditableDiv;
-module.exports = exports['default'];
+  return EditorContentEditableDiv;
+}(React.Component);
+
+export default EditorContentEditableDiv;

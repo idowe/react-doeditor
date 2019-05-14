@@ -611,15 +611,16 @@ export default class EditorCore extends Component {
       let nodeContent = EditorSelection.range.cloneContents();
       console.log(nodeContent);
       let nodeContentList = nodeContent.querySelectorAll("p");
+      console.log(nodeContentList);
+      let p = document.createElement("p");
       if (nodeContentList.length > 0) {
-        nodeContentList.map(item => {
-          item.style.textAlign = "justify";
+        nodeContentList.forEach((item, index) => {
+          nodeContentList[index].style.textAlign = "justify";
+          p.appendChild(nodeContentList[index]);
         });
         EditorSelection.range.deleteContents();
-        console.log(nodeContentList);
-        EditorSelection.insertNode(nodeContentList);
+        EditorSelection.insertNode(p);
       } else {
-        var p = document.createElement("p");
         p.appendChild(nodeContent);
         p.style.textAlign = "justify";
         EditorSelection.range.deleteContents();

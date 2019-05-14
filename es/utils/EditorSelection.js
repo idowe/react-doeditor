@@ -1,14 +1,4 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _EditorDom = require("./EditorDom");
-
-var _EditorDom2 = _interopRequireDefault(_EditorDom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+import EditorDom from "./EditorDom";
 
 NodeList.prototype.toArray = function () {
   var nodes = [];
@@ -46,7 +36,7 @@ var EditorSelection = {
     var endOffset = this.range.endOffset;
     var textNodes = [];
 
-    if (startNode === endNode && _EditorDom2["default"].isTextNode(startNode)) {
+    if (startNode === endNode && EditorDom.isTextNode(startNode)) {
       textNodes.push({
         childNode: startNode,
         startOffset: startOffset,
@@ -57,7 +47,7 @@ var EditorSelection = {
           startFlag = false;
       var childNode = childNodes.shift();
       while (childNode) {
-        if (_EditorDom2["default"].isTextNode(childNode)) {
+        if (EditorDom.isTextNode(childNode)) {
           if (childNode === startNode) {
             textNodes.push({
               childNode: childNode,
@@ -99,10 +89,10 @@ var EditorSelection = {
     var endNode = this.range.endContainer;
     var spanNodes = [];
 
-    if (_EditorDom2["default"].isSpanNode(parent)) {
+    if (EditorDom.isSpanNode(parent)) {
       spanNodes.push(parent);
     }
-    if (startNode === endNode && _EditorDom2["default"].isSpanNode(startNode)) {
+    if (startNode === endNode && EditorDom.isSpanNode(startNode)) {
       spanNodes.push(startNode);
     } else {
       var childNodes = parent.childNodes.toArray(),
@@ -112,11 +102,11 @@ var EditorSelection = {
       while (childNode) {
         if (childNode === startNode) {
           startFlag = true;
-          if (_EditorDom2["default"].isSpanNode(childNode.parentNode)) {
+          if (EditorDom.isSpanNode(childNode.parentNode)) {
             spanNodes.push(childNode.parentNode);
           }
         }
-        if (_EditorDom2["default"].isSpanNode(childNode) && startFlag) {
+        if (EditorDom.isSpanNode(childNode) && startFlag) {
           spanNodes.push(childNode);
         }
         if (childNode == endNode) {
@@ -351,5 +341,4 @@ var EditorSelection = {
     }
   }
 };
-exports["default"] = EditorSelection;
-module.exports = exports['default'];
+export default EditorSelection;
