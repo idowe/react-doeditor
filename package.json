@@ -1,47 +1,89 @@
 {
-  "name": "react-umeditor",
+  "name": "react-doeditor",
   "version": "1.0.15",
   "description": "React Editor like UMEditor",
-  "main": "lib/editor.js",
-  "files": [
-    "lib",
-    "dist"
-  ],
-  "scripts": {
-    "clean": "rm -rf ./lib",
-    "clean-win": "del lib /Q",
-    "copy": "cp -R images/. dist/images && cp -R less/. dist/less && cp -R third-part/. dist/third-part",
-    "build": "npm run copy && NODE_ENV=production & babel ./src --out-dir ./lib ",
-    "copy-win": "xcopy less dist\\less\\ /s /y && xcopy images dist\\images\\ /s /y && xcopy  third-part dist\\third-part\\ /s /y",
-    "build-win": " npm run copy-win &&  set NODE_ENV=production & babel src --out-dir lib",
-    "test": "mocha test/{,**/}{,**/}*.js  --compilers js:babel-register --com --require ./test/setup.js"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "jquery": "^3.1.1",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/liuhong1happy/react-umeditor.git"
-  },
   "keywords": [
     "react",
-    "react-umeditor"
+    "react-doeditor",
+    "component",
+    "ui"
   ],
-  "author": "Holly Liu",
+  "files": [
+    "assets/*.css",
+    "dist",
+    "es",
+    "lib"
+  ],
+  "main": "./lib/index",
+  "module": "./es/index",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/liuhong1happy/react-umeditor/issues"
+  "config": {
+    "port": 8000,
+    "entry": {
+      "react-doeditor": [
+        "./less/editor.less",
+        "./src/index.js"
+      ]
+    }
   },
-  "homepage": "https://github.com/liuhong1happy/react-umeditor#readme",
+  "scripts": {
+    "dist": "rc-tools run dist",
+    "build": "rc-tools run build",
+    "compile": "rc-tools run compile --babel-runtime",
+    "gh-pages": "rc-tools run gh-pages",
+    "start": "rc-tools run server",
+    "pub": "rc-tools run pub --babel-runtime",
+    "lint": "rc-tools run lint",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "lint-staged": "lint-staged"
+  },
+  "jest": {
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*"
+    ],
+    "transform": {
+      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
+    },
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
   "dependencies": {
-    "classnames": "^2.2.6"
+    "babel-runtime": "6.x",
+    "classnames": "^2.2.5",
+    "component-classes": "^1.2.6",
+    "lodash": "^4.17.5",
+    "mini-store": "^2.0.0",
+    "prop-types": "^15.5.8",
+    "rc-util": "^4.0.4",
+    "react-lifecycles-compat": "^3.0.2",
+    "shallowequal": "^1.0.2",
+    "warning": "^3.0.0"
+  },
+  "devDependencies": {
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.1",
+    "enzyme-to-json": "^3.1.2",
+    "immutability-helper": "^3.0.0",
+    "jest": "^21.2.1",
+    "lint-staged": "^8.1.6",
+    "pre-commit": "1.x",
+    "prettier": "^1.11.1",
+    "rc-animate": "^2.3.0",
+    "rc-dropdown": "~2.0.1",
+    "rc-menu": "^5.0.11",
+    "rc-tools": "^8.4.1",
+    "react": "^16.0.0",
+    "react-dnd": "^2.5.4",
+    "react-dnd-html5-backend": "^2.5.4",
+    "react-dom": "^16.0.0",
+    "react-resizable": "^1.7.5",
+    "react-test-renderer": "^16.0.0",
+    "react-virtualized": "^9.12.0",
+    "styled-components": "^2.2.1"
   }
 }

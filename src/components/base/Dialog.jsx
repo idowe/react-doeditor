@@ -1,4 +1,4 @@
-var React = require('react');
+import React from "react";
 
 /**
  * @width: 对话框宽度
@@ -8,12 +8,12 @@ var React = require('react');
  * @title: 对话框标题
  * @className: 对话框类名
  **/
-class Dialog extends React.Component {
+export default class Dialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false
-    }
+    };
   }
   componentDidMount() {
     window.addEventListener("click", this.close.bind(this));
@@ -24,23 +24,23 @@ class Dialog extends React.Component {
   open() {
     this.setState({
       show: true
-    })
+    });
   }
   close() {
     if (!this.state.show) return;
     this.setState({
       show: false
-    })
+    });
   }
   toggle() {
     this.setState({
       show: !this.state.show
-    })
+    });
   }
   handleMouseDown(e) {
     e = e || event;
     if (e.stopPropagation) {
-      e.stopPropagation()
+      e.stopPropagation();
     } else {
       e.cancelBubble = true;
     }
@@ -67,36 +67,40 @@ class Dialog extends React.Component {
     style.display = this.state.show ? "" : "none";
     let _className = "dialog" + (className ? " " + className : "");
     return (
-      <div className="dialog-container"   ref="root" onMouseDown={this.handleMouseDown.bind(this)}>
-				<div className={_className} ref="dialog" style={style}>
-					<div className="dialog-header" ref="header">
-						<a className="dialog-close" onClick={onClose} />
-            <h3 className="dialog-title">
-              {title}
-            </h3>
+      <div
+        className="dialog-container"
+        ref="root"
+        onMouseDown={this.handleMouseDown.bind(this)}
+      >
+        <div className={_className} ref="dialog" style={style}>
+          <div className="dialog-header" ref="header">
+            <a className="dialog-close" onClick={onClose} />
+            <h3 className="dialog-title">{title}</h3>
           </div>
           <div className="dialog-body" ref="body">
             {children}
           </div>
           <div className="dialog-footer" ref="footer">
-            {
-							buttons.map(function(ele,pos){
-								return (
-                  <a className="dialog-button"
-                    key={pos}
-                    data-name={ele.name}
-                    onClick={ele.onClick}>
-                    {ele.content}
-                  </a>
-                )
-							})
-            }
+            {buttons.map(function(ele, pos) {
+              return (
+                <a
+                  className="dialog-button"
+                  key={pos}
+                  data-name={ele.name}
+                  onClick={ele.onClick}
+                >
+                  {ele.content}
+                </a>
+              );
+            })}
           </div>
         </div>
-        <div className="dialog-backdrop" ref="backdrop" style={{"display":this.state.show?"":"none"}} />
+        <div
+          className="dialog-backdrop"
+          ref="backdrop"
+          style={{ display: this.state.show ? "" : "none" }}
+        />
       </div>
-    )
+    );
   }
 }
-
-module.exports = Dialog;

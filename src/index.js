@@ -1,24 +1,30 @@
-import React, {
-  Component
-} from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import EditorCore from './components/core/EditorCore';
-import EditorEventEmitter from './utils/EditorEventEmitter';
-import '../dist/less/editor.less';
-import './utils/Date.js'
+import React from "react";
+import PropTypes from "prop-types";
+import EditorCore from "./components/core/EditorCore";
+import EditorEventEmitter from "./utils/EditorEventEmitter";
+import EditorDOM from "./utils/EditorDOM";
+import EditorSelection from "./utils/EditorSelection";
+import Dialog from "./components/base/Dialog";
 
-export default class Editor extends Component {
+import "../less/editor.less";
+import "./utils/Date.js";
+
+export { EditorDOM, EditorSelection, Dialog };
+
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: false,
       reload: true
-    }
+    };
   }
   componentDidMount() {
     this.index = EditorEventEmitter.editorIndex;
-    EditorEventEmitter.addStartListener("start-" + this.index, this.handleChange);
+    EditorEventEmitter.addStartListener(
+      "start-" + this.index,
+      this.handleChange
+    );
   }
   componentWillUnmount() {
     var index = this.index;
@@ -29,11 +35,11 @@ export default class Editor extends Component {
       this.refs.editor.setContent(this.props.value || this.props.defaultValue);
     }
   }
-  handleChange=()=> {
+  handleChange = () => {
     this.setState({
       loaded: true
-    })
-  }
+    });
+  };
   handleMountSuccess() {
     EditorEventEmitter.mountEditorSuccess();
   }
@@ -64,166 +70,170 @@ export default class Editor extends Component {
   }
   render() {
     var loaded = this.state.loaded;
-    var {
-      value,
-      defaultValue,
-      ...props
-    } = this.props;
+    var { value, defaultValue, ...props } = this.props;
     if (!this.state.loaded) {
       return (
         <div
           id={props.id}
           className="editor-contenteditable-div"
-          style={{"minHeight":"30px","border":"1px solid #ddd"}}>
-              正在加载...
+          style={{ minHeight: "30px", border: "1px solid #ddd" }}
+        >
+          正在加载...
         </div>
-      )
+      );
     } else {
       return (
-        <EditorCore ref="editor" {...props} onEditorMount={this.handleMountSuccess}/>
-      )
+        <EditorCore
+          ref="editor"
+          {...props}
+          onEditorMount={this.handleMountSuccess}
+        />
+      );
     }
   }
 }
 
-Editor.propTypes = {
+App.propTypes = {
   plugins: PropTypes.object,
   fontFamily: PropTypes.array,
   fontSize: PropTypes.array,
   paragraph: PropTypes.array,
   icons: PropTypes.arrayOf(PropTypes.string),
   value: PropTypes.string,
-  defaultValue: PropTypes.string,
-}
+  defaultValue: PropTypes.string
+};
 
-Editor.defaultProps = {
-  "plugins": {
-    "image": {
-      "uploader": {
+App.defaultProps = {
+  plugins: {
+    image: {
+      uploader: {
         name: "file",
         url: "/upload",
         data: {},
-        filter: (res)=> res.url
+        filter: res => res.url
       }
     },
-    "toolbar": {
+    toolbar: {
       icons: []
     }
   },
-  "fontFamily": [{
-    "name": "宋体",
+  fontFamily: [
+    {
+      name: "宋体",
       value: "宋体, SimSun",
       defualt: true
     },
     {
-      "name": "隶书",
+      name: "隶书",
       value: "隶书, SimLi"
     },
     {
-      "name": "楷体",
+      name: "楷体",
       value: "楷体, SimKai"
     },
     {
-      "name": "微软雅黑",
+      name: "微软雅黑",
       value: "微软雅黑, Microsoft YaHei"
     },
     {
-      "name": "黑体",
+      name: "黑体",
       value: "黑体, SimHei"
     },
     {
-      "name": "arial",
+      name: "arial",
       value: "arial, helvetica, sans-serif"
     },
     {
-      "name": "arial black",
+      name: "arial black",
       value: "arial black, avant garde"
     },
     {
-      "name": "omic sans ms",
+      name: "omic sans ms",
       value: "omic sans ms"
     },
     {
-      "name": "impact",
+      name: "impact",
       value: "impact, chicago"
     },
     {
-      "name": "times new roman",
+      name: "times new roman",
       value: "times new roman"
     },
     {
-      "name": "andale mono",
+      name: "andale mono",
       value: "andale mono"
     }
   ],
-  "fontSize": [{
-      "name": "10px",
+  fontSize: [
+    {
+      name: "10px",
       value: "1"
     },
     {
-      "name": "12px",
+      name: "12px",
       value: "2"
     },
     {
-      "name": "16px",
+      name: "16px",
       value: "3",
       defualt: true
     },
     {
-      "name": "18px",
+      name: "18px",
       value: "4"
     },
     {
-      "name": "24px",
+      name: "24px",
       value: "5"
     },
     {
-      "name": "32px",
+      name: "32px",
       value: "6"
     },
     {
-      "name": "38px",
+      name: "38px",
       value: "7"
     }
   ],
-  "paragraph": [{
-      "name": "段落",
+  paragraph: [
+    {
+      name: "段落",
       value: "p",
       defualt: true
     },
     {
-      "name": "标题1",
+      name: "标题1",
       value: "h1"
     },
     {
-      "name": "标题2",
+      name: "标题2",
       value: "h2"
     },
     {
-      "name": "标题3",
+      name: "标题3",
       value: "h3"
     },
     {
-      "name": "标题4",
+      name: "标题4",
       value: "h4"
     },
     {
-      "name": "标题5",
+      name: "标题5",
       value: "h5"
     },
     {
-      "name": "标题6",
+      name: "标题6",
       value: "h6"
     }
   ],
-  "icons": [
+  icons: [
     // video map print preview drafts link unlink formula
     "source | undo redo | bold italic underline strikethrough fontborder emphasis | ",
     "paragraph fontfamily fontsize | superscript subscript | ",
     "forecolor backcolor | removeformat | insertorderedlist insertunorderedlist | selectall | ",
-    "cleardoc  | indent outdent | justifyleft justifycenter justifyright | touppercase tolowercase | ",
+    "cleardoc  | indent outdent | justifyleft justifycenter justifyright justifyjustify | touppercase tolowercase | ",
     "horizontal date time  | image emotion spechars | inserttable"
   ],
-  "value": "",
-  "defaultValue": ""
+  value: "",
+  defaultValue: ""
 };

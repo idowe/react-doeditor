@@ -1,29 +1,29 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
 // utlils
-import EditorHistory from '../../utils/EditorHistory'
-import EditorSelection from '../../utils/EditorSelection'
-import EditorDom from '../../utils/EditorDom'
-import EditorTimer from '../../utils/EditorTimer'
+import EditorHistory from "../../utils/EditorHistory";
+import EditorSelection from "../../utils/EditorSelection";
+import EditorDom from "../../utils/EditorDom";
+import EditorTimer from "../../utils/EditorTimer";
 
 // dialog & dropdown
-import ColorDropdown from '../plugins/ColorDropdown'
-import FormulaDropdown from '../plugins/FormulaDropdown'
-import TablePickerDropdown from '../plugins/TablePickerDropdown'
+import ColorDropdown from "../plugins/ColorDropdown";
+import FormulaDropdown from "../plugins/FormulaDropdown";
+import TablePickerDropdown from "../plugins/TablePickerDropdown";
 // combobox
-import FontSizeComboBox from '../plugins/FontSizeComboBox'
-import FontFamilyComboBox from '../plugins/FontFamilyComboBox'
-import ParagraphComboBox from '../plugins/ParagraphComboBox'
+import FontSizeComboBox from "../plugins/FontSizeComboBox";
+import FontFamilyComboBox from "../plugins/FontFamilyComboBox";
+import ParagraphComboBox from "../plugins/ParagraphComboBox";
 // dialog
-import EmotionDialog from '../plugins/EmotionDialog'
-import SpecialCharsDialog from '../plugins/SpecialCharsDialog'
-import ImageDialog from '../plugins/ImageDialog';
+import EmotionDialog from "../plugins/EmotionDialog";
+import SpecialCharsDialog from "../plugins/SpecialCharsDialog";
+import ImageDialog from "../plugins/ImageDialog";
 
 // base components
-import EditorToolbar from './EditorToolbar'
-import EditorTextArea from './EditorTextArea'
-import EditorContentEditableDiv from './EditorContentEditableDiv'
+import EditorToolbar from "./EditorToolbar";
+import EditorTextArea from "./EditorTextArea";
+import EditorContentEditableDiv from "./EditorContentEditableDiv";
 
 // key down context
 var saveSceneTimer = null;
@@ -53,38 +53,38 @@ export default class EditorCore extends Component {
         icon: "",
         showHtml: false,
         icons: {
-          "forecolor": {
-            color: 'transparent',
+          forecolor: {
+            color: "transparent",
             icon: "forecolor"
           },
-          "backcolor": {
-            color: 'transparent',
+          backcolor: {
+            color: "transparent",
             icon: "backcolor"
           },
-          "fontsize": {
+          fontsize: {
             value: "3",
             icon: "fontsize"
           },
-          "paragraph": {
+          paragraph: {
             value: "p",
             icon: "fontsize"
           },
-          "fontfamily": {
+          fontfamily: {
             value: "宋体, SimSun",
             icon: "fontfamily"
           },
-          "indent": {
+          indent: {
             active: false,
             icon: "indent"
           },
-          "outdent": {
+          outdent: {
             active: true,
             icon: "outdent"
           }
         }
       },
       value: this.props.value || this.props.defaultValue
-    }
+    };
     this.iconComponetMap = {};
   }
   componentDidMount() {
@@ -98,23 +98,26 @@ export default class EditorCore extends Component {
       case "source":
       case "cleardoc":
         if (editorState.content) {
-          this.setContent(editorState.content)
+          this.setContent(editorState.content);
         }
-        setTimeout(()=>{
+        setTimeout(() => {
           this.setState({
-            editorState: {...editorState, icon: ""}
-          })
-        })
+            editorState: { ...editorState, icon: "" }
+          });
+        });
         break;
     }
   }
 
   // event handler
-  handleKeyDown = (evt) => {
+  handleKeyDown = evt => {
     evt = evt || event;
     let target = evt.target || evt.srcElement;
-    let { maxInputCount } = this.state
-    if (target.className && target.className.indexOf('editor-contenteditable-div') != -1) {
+    let { maxInputCount } = this.state;
+    if (
+      target.className &&
+      target.className.indexOf("editor-contenteditable-div") != -1
+    ) {
       let keyCode = evt.keyCode || evt.which;
       if (!evt.ctrlKey && !evt.metaKey && !evt.shiftKey && !evt.altKey) {
         if (EditorHistory.getCommandStack().length == 0) {
@@ -126,8 +129,8 @@ export default class EditorCore extends Component {
           let interalTimer = EditorTimer.setInterval(() => {
             this.autoSave();
             keycont = 0;
-            EditorTimer.clearInterval(interalTimer)
-          }, 300)
+            EditorTimer.clearInterval(interalTimer);
+          }, 300);
         }, 200);
         lastKeyCode = keyCode;
         keycont++;
@@ -138,23 +141,25 @@ export default class EditorCore extends Component {
       }
     }
     EditorDom.stopPropagation(evt);
-  }
+  };
 
-  handleKeyUp = (evt) => {
+  handleKeyUp = evt => {
     evt = evt || event;
     let target = evt.target || evt.srcElement;
-    if (target.className && target.className.indexOf(
-        'editor-contenteditable-div') != -1) {
+    if (
+      target.className &&
+      target.className.indexOf("editor-contenteditable-div") != -1
+    ) {
       if (!evt.ctrlKey && !evt.metaKey && !evt.shiftKey && !evt.altKey) {
         // some handle
       }
     }
     EditorDom.stopPropagation(evt);
-  }
+  };
 
   handleFocus(e) {
     if (this.props.onFocus) {
-      this.props.onFocus(e, this.findDOMNode('root'));
+      this.props.onFocus(e, this.findDOMNode("root"));
     }
     EditorDom.stopPropagation(e);
   }
@@ -166,8 +171,7 @@ export default class EditorCore extends Component {
   exchangeRangeState(editorState) {
     let rangeState = EditorSelection.getRangeState();
     for (let icon in rangeState) {
-      if (!editorState.icons[icon])
-        editorState.icons[icon] = rangeState[icon];
+      if (!editorState.icons[icon]) editorState.icons[icon] = rangeState[icon];
       else {
         switch (icon) {
           case "forecolor":
@@ -194,7 +198,7 @@ export default class EditorCore extends Component {
       this.setState({
         value: content,
         editorState: editorState
-      })
+      });
     }
   }
   handleRangeChange(e) {
@@ -211,7 +215,7 @@ export default class EditorCore extends Component {
         this.props.onChange(content);
         this.setState({
           value: content
-        })
+        });
       }
     }
     let editorState = this.state.editorState;
@@ -220,22 +224,29 @@ export default class EditorCore extends Component {
         editorState = this.exchangeRangeState(editorState);
         this.setState({
           editorState: editorState
-        })
-      }
-      else {
+        });
+      } else {
         let parentNode = EditorSelection.validateSelection(selection);
-        if(parentNode && EditorDom.isEditorDom(parentNode, ReactDOM.findDOMNode(this.refs.root))) {
+        if (
+          parentNode &&
+          EditorDom.isEditorDom(
+            parentNode,
+            ReactDOM.findDOMNode(this.refs.root)
+          )
+        ) {
           editorState = this.exchangeRangeState(editorState);
           this.setState({
             editorState: editorState
-          })
+          });
           if (this.refs.editarea && this.refs.editarea.clearResizeTarget) {
             this.refs.editarea.clearResizeTarget();
           }
         }
       }
-    } else if (target && EditorDom.isEditorDom(target, ReactDOM.findDOMNode(
-        this.refs.root))) {
+    } else if (
+      target &&
+      EditorDom.isEditorDom(target, ReactDOM.findDOMNode(this.refs.root))
+    ) {
       let tagName = target.tagName.toUpperCase();
       switch (tagName) {
         case "IMG":
@@ -248,18 +259,18 @@ export default class EditorCore extends Component {
       editorState = this.exchangeRangeState(editorState);
       this.setState({
         editorState: editorState
-      })
+      });
     }
   }
 
-  editorSource = (state) => {
-    let editorState = this.state.editorState
+  editorSource = state => {
+    let editorState = this.state.editorState;
     editorState.showHtml = !editorState.showHtml;
     state.active = editorState.showHtml;
     editorState.content = this.refs.editarea.getContent();
-  }
+  };
 
-  editorRemoveFormat = (state) => {
+  editorRemoveFormat = state => {
     EditorHistory.execCommand(state.icon, false, null);
     EditorSelection.storeRange();
     let spanNodes = EditorSelection.getSpanNodes();
@@ -275,8 +286,10 @@ export default class EditorCore extends Component {
           nextSibling = spanNode.nextSibling || spanNode;
           childSum = spanNode.childNodes.length;
           for (let c = 0; c < childSum; c++) {
-            parentNode.insertBefore(spanNode.childNodes[c].cloneNode(),
-              nextSibling);
+            parentNode.insertBefore(
+              spanNode.childNodes[c].cloneNode(),
+              nextSibling
+            );
           }
           parentNode.removeChild(spanNodes[i]);
           break;
@@ -286,38 +299,40 @@ export default class EditorCore extends Component {
           nextSibling = spanNode.nextSibling || spanNode;
           childSum = spanNode.childNodes.length;
           for (let c = 0; c < childSum; c++) {
-            parentNode.insertBefore(spanNode.childNodes[c].cloneNode(),
-              nextSibling);
+            parentNode.insertBefore(
+              spanNode.childNodes[c].cloneNode(),
+              nextSibling
+            );
           }
           parentNode.removeChild(spanNodes[i]);
           break;
       }
     }
     EditorSelection.restoreRange();
-  }
+  };
 
-  editorUpLowCase = (state) => {
+  editorUpLowCase = state => {
     EditorSelection.storeRange();
     let textNodes = EditorSelection.getTextNodes();
-    let node = null
-    let start = null
-    let end = null
+    let node = null;
+    let start = null;
+    let end = null;
     for (let i = 0; i < textNodes.length; i++) {
       node = textNodes[i].childNode;
       start = textNodes[i].startOffset;
       end = textNodes[i].endOffset;
-      node.nodeValue = node.nodeValue.substring(0, start) +
-              (state.icon == "touppercase" ? node.nodeValue.substring(start,
-                end)
-                .toUpperCase() : node.nodeValue.substring(start, end)
-                  .toLowerCase()) +
+      node.nodeValue =
+        node.nodeValue.substring(0, start) +
+        (state.icon == "touppercase"
+          ? node.nodeValue.substring(start, end).toUpperCase()
+          : node.nodeValue.substring(start, end).toLowerCase()) +
         node.nodeValue.substring(end, node.length);
     }
     EditorHistory.execCommand(state.icon, false, null);
     EditorSelection.restoreRange();
-  }
+  };
 
-  editorFontBorder = (state) => {
+  editorFontBorder = state => {
     let textNodes = EditorSelection.getTextNodes();
     let startNode = null,
       endNode = null,
@@ -335,8 +350,11 @@ export default class EditorCore extends Component {
       let borderText = cloneNode.nodeValue.substring(start, end);
       let span = null;
       let textParentNode = textNodes[i].childNode.parentNode;
-      if (textParentNode && textParentNode.className && textParentNode.className ==
-        "font-border") {
+      if (
+        textParentNode &&
+        textParentNode.className &&
+        textParentNode.className == "font-border"
+      ) {
         if (i == 0) {
           startNode = textNodes[i].childNode;
           startOffset = start;
@@ -354,8 +372,10 @@ export default class EditorCore extends Component {
         span.style.border = "1px solid #000";
         node.parentNode.insertBefore(span, node.nextSibling || node);
         if (endText != "") {
-          node.parentNode.insertBefore(document.createTextNode(endText),
-            span.nextSibling);
+          node.parentNode.insertBefore(
+            document.createTextNode(endText),
+            span.nextSibling
+          );
         }
         if (i == 0) startNode = span.childNodes[0];
         if (i == textNodes.length - 1) {
@@ -386,9 +406,9 @@ export default class EditorCore extends Component {
       }
     }
     EditorHistory.execCommand(state.icon, false, null);
-  }
+  };
 
-  editorEmphasis = (state) => {
+  editorEmphasis = state => {
     let textNodes = EditorSelection.getTextNodes();
     let startNode = null,
       endNode = null,
@@ -406,8 +426,11 @@ export default class EditorCore extends Component {
       let borderText = cloneNode.nodeValue.substring(start, end);
       let span = null;
       let textParentNode = textNodes[i].childNode.parentNode;
-      if (textParentNode && textParentNode.className && textParentNode.className ==
-        "emphasis") {
+      if (
+        textParentNode &&
+        textParentNode.className &&
+        textParentNode.className == "emphasis"
+      ) {
         if (i == 0) {
           startNode = textNodes[i].childNode;
           startOffset = start;
@@ -424,8 +447,10 @@ export default class EditorCore extends Component {
         span.innerHTML = borderText;
         node.parentNode.insertBefore(span, node.nextSibling || node);
         if (endText != "") {
-          node.parentNode.insertBefore(document.createTextNode(endText),
-            span.nextSibling);
+          node.parentNode.insertBefore(
+            document.createTextNode(endText),
+            span.nextSibling
+          );
         }
         if (i == 0) startNode = span.childNodes[0];
         if (i == textNodes.length - 1) {
@@ -457,64 +482,67 @@ export default class EditorCore extends Component {
       }
     }
     EditorHistory.execCommand(state.icon, false, null);
-  }
+  };
 
   editorForeColor = (state, offsetPosition, editarea) => {
     EditorSelection.storeRange();
     offsetPosition.y += offsetPosition.h + 5;
-    this.refs.color.toggle(offsetPosition, (color) => {
-      EditorDom.focusNode(editarea);;
+    this.refs.color.toggle(offsetPosition, color => {
+      EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
-      EditorHistory.execCommand('forecolor', false, color);
+      EditorHistory.execCommand("forecolor", false, color);
       this.handleRangeChange();
     });
-  }
+  };
 
   editorBackColor = (state, offsetPosition, editarea) => {
     EditorSelection.storeRange();
     offsetPosition.y += offsetPosition.h + 5;
 
-    this.refs.color.toggle(offsetPosition, (color) => {
-      EditorDom.focusNode(editarea);;
+    this.refs.color.toggle(offsetPosition, color => {
+      EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
-      EditorHistory.execCommand('backcolor', false, color);
+      EditorHistory.execCommand("backcolor", false, color);
       this.handleRangeChange();
     });
-  }
+  };
 
   editorFontSize = (state, offsetPosition, editarea) => {
     EditorSelection.storeRange();
     offsetPosition.y += offsetPosition.h + 5;
 
-    this.refs.fontsize.toggle(offsetPosition, (fontsize) => {
+    this.refs.fontsize.toggle(offsetPosition, fontsize => {
       EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
-      EditorHistory.execCommand('fontsize', false, fontsize);
+      EditorHistory.execCommand("fontsize", false, fontsize);
       this.handleRangeChange();
     });
-  }
+  };
 
   editorFontFamily = (state, offsetPosition, editarea) => {
     EditorSelection.storeRange();
     offsetPosition.y += offsetPosition.h + 5;
 
-    this.refs.fontfamily.toggle(offsetPosition, (fontfamily) => {
-      EditorDom.focusNode(editarea);;
+    this.refs.fontfamily.toggle(offsetPosition, fontfamily => {
+      EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
-      EditorHistory.execCommand('fontname', false, fontfamily);
+      EditorHistory.execCommand("fontname", false, fontfamily);
       this.handleRangeChange();
     });
-  }
+  };
 
-  editorParagraph = (state, offsetPosition, editarea) =>  {
+  editorParagraph = (state, offsetPosition, editarea) => {
     EditorSelection.storeRange();
     offsetPosition.y += offsetPosition.h + 5;
 
-    this.refs.paragraph.toggle(offsetPosition, (paragraph) => {
-      EditorDom.focusNode(editarea);;
+    this.refs.paragraph.toggle(offsetPosition, paragraph => {
+      EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
       let paragraphs = EditorSelection.getParagraphs();
-      let parentElement = null, childNodes = null, paraElement = null, parentNode = null
+      let parentElement = null,
+        childNodes = null,
+        paraElement = null,
+        parentNode = null;
       for (let i = 0; i < paragraphs.length; i++) {
         switch (paragraphs[i].tagName.toUpperCase()) {
           case "TD":
@@ -548,20 +576,22 @@ export default class EditorCore extends Component {
             break;
         }
       }
-      EditorHistory.execCommand('paragraph', false, paragraph);
+      EditorHistory.execCommand("paragraph", false, paragraph);
       this.handleRangeChange();
     });
-  }
+  };
 
   editorHorizontal = (editarea, root) => {
     let strTime = "<hr/><p></br></p>";
-    if (EditorSelection.range && EditorSelection.validateRange(root,
-      EditorSelection.range)) {
+    if (
+      EditorSelection.range &&
+      EditorSelection.validateRange(root, EditorSelection.range)
+    ) {
       if (EditorSelection.range.pasteHTML) {
         EditorSelection.range.pasteHTML(strTime);
       } else {
         let hr = EditorDom.createHR();
-        let p = EditorDom.createNodeByTag('p', '<br/>');
+        let p = EditorDom.createNodeByTag("p", "<br/>");
         EditorSelection.range.deleteContents();
         EditorSelection.insertNode(p);
         EditorSelection.insertNode(hr);
@@ -570,12 +600,34 @@ export default class EditorCore extends Component {
       editarea.innerHTML += strTime;
     }
     // EditorHistory.execCommand('inserthtml',false,"<hr/><p><br/></p>");
-  }
+  };
+
+  editorJustify = (editarea, root) => {
+    let strTime = "<hr/><p></br></p>";
+    if (
+      EditorSelection.range &&
+      EditorSelection.validateRange(root, EditorSelection.range)
+    ) {
+      if (EditorSelection.range.pasteHTML) {
+        EditorSelection.range.pasteHTML(strTime);
+      } else {
+        let hr = EditorDom.createHR();
+        let p = EditorDom.createNodeByTag("p", "<br/>");
+        EditorSelection.range.deleteContents();
+        EditorSelection.insertNode(p);
+        EditorSelection.insertNode(hr);
+      }
+    } else {
+      editarea.innerHTML += strTime;
+    }
+  };
 
   editorDate = (editarea, root) => {
     let strDate = new Date().Format("yyyy-MM-dd");
-    if (EditorSelection.range && EditorSelection.validateRange(root,
-      EditorSelection.range)) {
+    if (
+      EditorSelection.range &&
+      EditorSelection.validateRange(root, EditorSelection.range)
+    ) {
       if (EditorSelection.range.pasteHTML) {
         EditorSelection.range.pasteHTML(strDate);
       } else {
@@ -584,15 +636,17 @@ export default class EditorCore extends Component {
         EditorSelection.insertNode(textNode);
       }
     } else {
-      editarea.innerHTML += '<p>' + strDate + '</p>';
+      editarea.innerHTML += "<p>" + strDate + "</p>";
     }
     // EditorHistory.execCommand('inserthtml',false, strDate);
-  }
+  };
 
   editorTime = (editarea, root) => {
-    let strTime = new Date().Format('hh:mm:ss');
-    if (EditorSelection.range && EditorSelection.validateRange(root,
-      EditorSelection.range)) {
+    let strTime = new Date().Format("hh:mm:ss");
+    if (
+      EditorSelection.range &&
+      EditorSelection.validateRange(root, EditorSelection.range)
+    ) {
       if (EditorSelection.range.pasteHTML) {
         EditorSelection.range.pasteHTML(strTime);
       } else {
@@ -601,53 +655,62 @@ export default class EditorCore extends Component {
         EditorSelection.insertNode(textNode);
       }
     } else {
-      editarea.innerHTML += '<p>' + strTime + '</p>';
+      editarea.innerHTML += "<p>" + strTime + "</p>";
     }
     // EditorHistory.execCommand('inserthtml',false,strTime);
-  }
+  };
 
   editorImage = (editarea, root) => {
     EditorSelection.storeRange();
-    this.refs.image.toggle((html) => {
-      EditorDom.focusNode(editarea);;
+    this.refs.image.toggle(html => {
+      EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
       if (html && html.length > 0) {
-        if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
+        if (
+          EditorSelection.range &&
+          EditorSelection.validateRange(root, EditorSelection.range)
+        ) {
           if (EditorSelection.range.pasteHTML) {
-            EditorSelection.range.pasteHTML('<p>' + html + '</p>');
+            EditorSelection.range.pasteHTML("<p>" + html + "</p>");
           } else {
-            let p = EditorDom.createNodeByTag('p', html);
+            let p = EditorDom.createNodeByTag("p", html);
             EditorSelection.range.deleteContents();
             EditorSelection.insertNode(p);
           }
           // EditorHistory.execCommand('inserthtml',false,html);
         } else {
-          editarea.innerHTML += '<p>' + html + '</p>';
+          editarea.innerHTML += "<p>" + html + "</p>";
         }
       }
-    })
-  }
+    });
+  };
 
   editorFormula = (editarea, root, offsetPosition) => {
     EditorSelection.storeRange();
     offsetPosition.y += offsetPosition.h + 5;
     offsetPosition.x -= offsetPosition.w / 2;
     this.refs.formula.toggle(offsetPosition, (latex, id) => {
-      EditorDom.focusNode(editarea);;
+      EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
 
       if (latex && latex.length > 0) {
         let html =
           '<span>&nbsp;<span class="mathquill-embedded-latex" id="' +
-            id + '"></span>&nbsp;</span>';
-        if (EditorSelection.range && EditorSelection.validateRange(
-          root, EditorSelection.range)) {
+          id +
+          '"></span>&nbsp;</span>';
+        if (
+          EditorSelection.range &&
+          EditorSelection.validateRange(root, EditorSelection.range)
+        ) {
           if (EditorSelection.range.pasteHTML) {
             EditorSelection.range.pasteHTML(html);
           } else {
-            let span = EditorDom.createNodeByTag('span',
+            let span = EditorDom.createNodeByTag(
+              "span",
               '&nbsp;<span class="mathquill-embedded-latex" id="' +
-                id + '"></span>&nbsp;');
+                id +
+                '"></span>&nbsp;'
+            );
             EditorSelection.range.deleteContents();
             EditorSelection.insertNode(span);
           }
@@ -660,18 +723,20 @@ export default class EditorCore extends Component {
         }, 200);
         this.handleRangeChange();
       }
-    })
-  }
+    });
+  };
 
   editorInsertTable = (editarea, root, offsetPosition) => {
     EditorSelection.storeRange();
     offsetPosition.y += offsetPosition.h + 5;
     offsetPosition.x -= offsetPosition.w / 2;
-    this.refs.table.toggle(offsetPosition, (table) => {
-      EditorDom.focusNode(editarea);;
+    this.refs.table.toggle(offsetPosition, table => {
+      EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
-      if (EditorSelection.range && EditorSelection.validateRange(
-        root, EditorSelection.range)) {
+      if (
+        EditorSelection.range &&
+        EditorSelection.validateRange(root, EditorSelection.range)
+      ) {
         if (EditorSelection.range.pasteHTML) {
           EditorSelection.range.pasteHTML(table.outerHTML);
         } else {
@@ -684,15 +749,17 @@ export default class EditorCore extends Component {
       // EditorHistory.execCommand('inserthtml',false,html);
       this.handleRangeChange();
     });
-  }
+  };
 
   editorSpechars = (editarea, root) => {
     EditorSelection.storeRange();
-    this.refs.special.toggle((char) => {
-      EditorDom.focusNode(editarea);;
+    this.refs.special.toggle(char => {
+      EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
-      if (EditorSelection.range && EditorSelection.validateRange(
-        root, EditorSelection.range)) {
+      if (
+        EditorSelection.range &&
+        EditorSelection.validateRange(root, EditorSelection.range)
+      ) {
         if (EditorSelection.range.pasteHTML) {
           EditorSelection.range.pasteHTML(char);
         } else {
@@ -706,15 +773,17 @@ export default class EditorCore extends Component {
       // EditorHistory.execCommand('inserthtml',false,char);
       this.handleRangeChange();
     });
-  }
+  };
 
   editorEmotion = (editarea, root) => {
     EditorSelection.storeRange();
-    this.refs.emotion.toggle((img) => {
-      EditorDom.focusNode(editarea);;
+    this.refs.emotion.toggle(img => {
+      EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
-      if (EditorSelection.range && EditorSelection.validateRange(
-        root, EditorSelection.range)) {
+      if (
+        EditorSelection.range &&
+        EditorSelection.validateRange(root, EditorSelection.range)
+      ) {
         if (EditorSelection.range.pasteHTML) {
           EditorSelection.range.pasteHTML(img.outerHTML);
         } else {
@@ -727,7 +796,7 @@ export default class EditorCore extends Component {
       // EditorHistory.execCommand('inserthtml',false,html);
       this.handleRangeChange();
     });
-  }
+  };
 
   handleToolbarIconClick(e, state) {
     e = e || event;
@@ -748,7 +817,7 @@ export default class EditorCore extends Component {
     EditorSelection.restoreRange();
     switch (state.icon) {
       case "source":
-        this.editorSource(state)
+        this.editorSource(state);
         break;
       case "undo":
         EditorHistory.undo();
@@ -757,7 +826,7 @@ export default class EditorCore extends Component {
         EditorHistory.redo();
         break;
       case "removeformat":
-        this.editorRemoveFormat(state)
+        this.editorRemoveFormat(state);
         break;
       case "bold":
       case "italic":
@@ -775,70 +844,73 @@ export default class EditorCore extends Component {
       case "outdent":
         EditorHistory.execCommand(state.icon, false, null);
         break;
+      case "justifyjustify":
+        this.editorJustify(editarea, root);
+        break;
       case "touppercase":
       case "tolowercase":
-        this.editorUpLowCase(state)
+        this.editorUpLowCase(state);
         break;
       case "fontborder":
-        this.editorFontBorder(state)
+        this.editorFontBorder(state);
         break;
       case "emphasis":
-        this.editorEmphasis(state)
+        this.editorEmphasis(state);
         break;
       case "forecolor":
-        this.editorForeColor(state, offsetPosition, editarea)
+        this.editorForeColor(state, offsetPosition, editarea);
         break;
       case "backcolor":
-        this.editorBackColor(state, offsetPosition, editarea)
+        this.editorBackColor(state, offsetPosition, editarea);
         break;
       case "fontsize":
-        this.editorFontSize(state, offsetPosition, editarea)
+        this.editorFontSize(state, offsetPosition, editarea);
         break;
       case "fontfamily":
-        this.editorFontFamily(state, offsetPosition, editarea)
+        this.editorFontFamily(state, offsetPosition, editarea);
         break;
       case "paragraph":
-        this.editorParagraph(state, offsetPosition, editarea)
+        this.editorParagraph(state, offsetPosition, editarea);
         break;
       case "cleardoc":
-        editorState.content = "<p><br/></p>"
+        editorState.content = "<p><br/></p>";
         break;
       case "horizontal":
-        this.editorHorizontal(editarea, root)
+        this.editorHorizontal(editarea, root);
         break;
       case "date":
-        this.editorDate(editarea, root)
+        this.editorDate(editarea, root);
         break;
       case "time":
-        this.editorTime(editarea, root)
+        this.editorTime(editarea, root);
         break;
       case "image":
-        this.editorImage(editarea, root)
+        this.editorImage(editarea, root);
         break;
       case "formula":
-        this.editorFormula(editarea, root, offsetPosition)
+        this.editorFormula(editarea, root, offsetPosition);
         break;
       case "inserttable":
-        this.editorInsertTable(editarea, root, offsetPosition)
+        this.editorInsertTable(editarea, root, offsetPosition);
         break;
       case "spechars":
-        this.editorSpechars(editarea, root)
+        this.editorSpechars(editarea, root);
         break;
       case "emotion":
-        this.editorEmotion(editarea, root)
+        this.editorEmotion(editarea, root);
         break;
       default:
         const { toolbar = {} } = this.props.plugins || {};
         const pIcons = toolbar.icons || [];
-        var fIcon = pIcons.find(ic=> ic.name === state.icon);
-        if(fIcon && fIcon.onIconClick)
+        var fIcon = pIcons.find(ic => ic.name === state.icon);
+        if (fIcon && fIcon.onIconClick)
           fIcon.onIconClick({
-            editarea, 
+            editarea,
             root,
             offsetPosition,
             state,
             ref: this.iconComponetMap[state.icon]
-          })
+          });
         break;
     }
     // setState
@@ -851,12 +923,29 @@ export default class EditorCore extends Component {
     EditorDom.stopPropagation(e);
   }
   closeAllOpenDialog(icon) {
-    let refsDialog = ["image", "color", "formula", "table", "special",
-      "emotion", "fontsize", "fontfamily", "paragraph"
+    let refsDialog = [
+      "image",
+      "color",
+      "formula",
+      "table",
+      "special",
+      "emotion",
+      "fontsize",
+      "fontfamily",
+      "paragraph"
     ];
-    let icons = ["forecolor", "backcolor", "image", "emotion", "spechars",
-      "inserttable", "formula", "paragraph", "fontsize", "fontfamily"
-    ]
+    let icons = [
+      "forecolor",
+      "backcolor",
+      "image",
+      "emotion",
+      "spechars",
+      "inserttable",
+      "formula",
+      "paragraph",
+      "fontsize",
+      "fontfamily"
+    ];
     if (icons.indexOf(icon) == -1) return;
     for (let i = 0; i < refsDialog.length; i++) {
       this.refs[refsDialog[i]].close();
@@ -898,18 +987,16 @@ export default class EditorCore extends Component {
     $htmlElement.mousemove(function(e) {
       EditorDom.stopPropagation(e);
     });
-    $(editarea)
-      .mousedown(function(e) {
-        mathField.blur();
-        EditorDom.stopPropagation(e);
-      })
-    $(editarea)
-      .mousemove(function(e) {
-        EditorDom.stopPropagation(e);
-      })
+    $(editarea).mousedown(function(e) {
+      mathField.blur();
+      EditorDom.stopPropagation(e);
+    });
+    $(editarea).mousemove(function(e) {
+      EditorDom.stopPropagation(e);
+    });
   }
   autoSave() {
-    EditorHistory.execCommand('autosave', false, null);
+    EditorHistory.execCommand("autosave", false, null);
   }
   // public functions
   findDOMNode(refName) {
@@ -923,7 +1010,7 @@ export default class EditorCore extends Component {
     return {
       ref: this.refs[refName],
       dom: ReactDOM.findDOMNode(this.refs[refName])
-    }
+    };
   }
   setContent(content) {
     content = content || "";
@@ -934,12 +1021,10 @@ export default class EditorCore extends Component {
       let _self = this;
       EditorTimer.setTimeout(function() {
         let editarea = ReactDOM.findDOMNode(_self.refs.editarea);
-        let elements = editarea.querySelectorAll(
-          '.mathquill-embedded-latex');
+        let elements = editarea.querySelectorAll(".mathquill-embedded-latex");
         for (let i = 0; i < elements.length; i++) {
           if (!elements[i].id) {
-            let id = "mathquill-" + i + "-" + new Date()
-              .valueOf();
+            let id = "mathquill-" + i + "-" + new Date().valueOf();
             let latex = elements[i].innerHTML;
             elements[i].id = id;
             _self.addFormula(id, latex);
@@ -949,21 +1034,23 @@ export default class EditorCore extends Component {
     }
   }
   getContent() {
-    if (this.refs.editarea)
-      return this.refs.editarea.getContent();
-    else
-      return "";
+    if (this.refs.editarea) return this.refs.editarea.getContent();
+    else return "";
   }
   focusEditor() {
     let editarea = ReactDOM.findDOMNode(this.refs.editarea);
-    EditorDom.focusNode(editarea);;
+    EditorDom.focusNode(editarea);
   }
-  // render functions  
+  // render functions
   renderEditArea() {
     let showHtml = this.state.editorState.showHtml;
     if (showHtml) {
       return (
-        <EditorTextArea ref="editarea" onChange={this.handleChange.bind(this)} />)
+        <EditorTextArea
+          ref="editarea"
+          onChange={this.handleChange.bind(this)}
+        />
+      );
     } else {
       return (
         <EditorContentEditableDiv
@@ -971,8 +1058,9 @@ export default class EditorCore extends Component {
           handleKeyDown={this.handleKeyDown}
           handleKeyUp={this.handleKeyUp}
           onEditorMount={this.props.onEditorMount}
-          onRangeChange={this.handleRangeChange.bind(this)} />
-      )
+          onRangeChange={this.handleRangeChange.bind(this)}
+        />
+      );
     }
   }
   render() {
@@ -995,7 +1083,10 @@ export default class EditorCore extends Component {
       ...props
     } = this.props;
     let editorState = this.state.editorState;
-    let _icons = icons.join(" ").replace(/\|/gm, "separator").split(" ");
+    let _icons = icons
+      .join(" ")
+      .replace(/\|/gm, "separator")
+      .split(" ");
     const { toolbar = {} } = this.props.plugins || {};
     const pIcons = toolbar.icons || [];
     EditorSelection.customIcons = pIcons;
@@ -1003,79 +1094,102 @@ export default class EditorCore extends Component {
       <div
         ref="root"
         id={id}
-        className={"editor-container editor-default" +(className?" "+className:"")}
+        className={
+          "editor-container editor-default" + (className ? " " + className : "")
+        }
         onClick={this.handleClick.bind(this)}
         onBlur={this.handleRangeChange.bind(this)}
         onFocus={this.handleFocus.bind(this)}
-        {...props}>
-				<EditorToolbar
+        {...props}
+      >
+        <EditorToolbar
           ref="toolbar"
           editorState={editorState}
-          onIconClick={(e, state)=> this.handleToolbarIconClick(e, state)}
+          onIconClick={(e, state) => this.handleToolbarIconClick(e, state)}
           icons={this.props.icons}
           customIcons={pIcons}
           paragraph={this.props.paragraph}
           fontsize={this.props.fontSize}
           fontfamily={this.props.fontFamily}
         >
-					<ImageDialog
-            hidden={_icons.indexOf("image")==-1}
+          <ImageDialog
+            hidden={_icons.indexOf("image") == -1}
             ref="image"
             uploader={plugins.image.uploader}
             customUploader={plugins.image.customUploader}
           />
-					<ColorDropdown
-            hidden={_icons.indexOf("forecolor")==-1 &&_icons.indexOf("forecolor")}
+          <ColorDropdown
+            hidden={
+              _icons.indexOf("forecolor") == -1 && _icons.indexOf("forecolor")
+            }
             ref="color"
           />
-					<FormulaDropdown
-            hidden={ _icons.indexOf("formula")==-1}
+          <FormulaDropdown
+            hidden={_icons.indexOf("formula") == -1}
             ref="formula"
           />
-					<TablePickerDropdown
-            hidden={_icons.indexOf("inserttable")==-1}
+          <TablePickerDropdown
+            hidden={_icons.indexOf("inserttable") == -1}
             ref="table"
           />
-					<SpecialCharsDialog
-            hidden={ _icons.indexOf("spechars")==-1}
+          <SpecialCharsDialog
+            hidden={_icons.indexOf("spechars") == -1}
             ref="special"
           />
-					<EmotionDialog
-            hidden={ _icons.indexOf("emotion")==-1}
+          <EmotionDialog
+            hidden={_icons.indexOf("emotion") == -1}
             ref="emotion"
           />
-					<FontSizeComboBox
-            hidden={ _icons.indexOf("fontsize") ==-1}
+          <FontSizeComboBox
+            hidden={_icons.indexOf("fontsize") == -1}
             ref="fontsize"
             fontsize={this.props.fontSize}
-            value={editorState.icons["fontsize"]?editorState.icons["fontsize"].value: fontSize[0].value}
+            value={
+              editorState.icons["fontsize"]
+                ? editorState.icons["fontsize"].value
+                : fontSize[0].value
+            }
           />
-					<FontFamilyComboBox
-            hidden={ _icons.indexOf("fontfamily") ==-1 }
+          <FontFamilyComboBox
+            hidden={_icons.indexOf("fontfamily") == -1}
             ref="fontfamily"
             fontfamily={this.props.fontFamily}
-            value={editorState.icons["fontfamily"]?editorState.icons["fontfamily"].value: fontFamily[0].value}
+            value={
+              editorState.icons["fontfamily"]
+                ? editorState.icons["fontfamily"].value
+                : fontFamily[0].value
+            }
           />
-					<ParagraphComboBox
-            hidden={_icons.indexOf("paragraph") ==-1 }
+          <ParagraphComboBox
+            hidden={_icons.indexOf("paragraph") == -1}
             ref="paragraph"
             paragraph={this.props.paragraph}
-            value={editorState.icons["paragraph"]?editorState.icons["paragraph"].value: paragraph[0].value}
+            value={
+              editorState.icons["paragraph"]
+                ? editorState.icons["paragraph"].value
+                : paragraph[0].value
+            }
           />
-          {
-            pIcons.filter(ic=>ic.component).map(ic=>{
+          {pIcons
+            .filter(ic => ic.component)
+            .map(ic => {
               const Com = ic.component;
-              return <Com 
-                hidden={ _icons.indexOf(ic.name) ==-1}
-                ref={(com)=> this.iconComponetMap[ic.name] = com}
-                {...ic.props}
-                value={editorState.icons[ic.name]?editorState.icons[ic.name].value: ic.defaultValue}
-              />
-            })
-          }
-					</EditorToolbar>
-					{editArea}
-				</div>
-    )
+              return (
+                <Com
+                  hidden={_icons.indexOf(ic.name) == -1}
+                  ref={com => (this.iconComponetMap[ic.name] = com)}
+                  {...ic.props}
+                  value={
+                    editorState.icons[ic.name]
+                      ? editorState.icons[ic.name].value
+                      : ic.defaultValue
+                  }
+                />
+              );
+            })}
+        </EditorToolbar>
+        {editArea}
+      </div>
+    );
   }
 }
