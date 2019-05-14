@@ -603,22 +603,28 @@ export default class EditorCore extends Component {
   };
 
   editorJustify = (editarea, root) => {
-    let strTime = "<hr/><p></br></p>";
     if (
       EditorSelection.range &&
       EditorSelection.validateRange(root, EditorSelection.range)
     ) {
-      if (EditorSelection.range.pasteHTML) {
-        EditorSelection.range.pasteHTML(strTime);
+      console.log(EditorSelection.range);
+      let nodeContent = EditorSelection.range.cloneContents();
+      console.log(nodeContent);
+      let nodeContentList = nodeContent.querySelectorAll("p");
+      if (nodeContentList.length > 0) {
+        nodeContentList.map(item => {
+          item.style.textAlign = "justify";
+        });
+        EditorSelection.range.deleteContents();
+        console.log(nodeContentList);
+        EditorSelection.insertNode(nodeContentList);
       } else {
-        let hr = EditorDom.createHR();
-        let p = EditorDom.createNodeByTag("p", "<br/>");
+        var p = document.createElement("p");
+        p.appendChild(nodeContent);
+        p.style.textAlign = "justify";
         EditorSelection.range.deleteContents();
         EditorSelection.insertNode(p);
-        EditorSelection.insertNode(hr);
       }
-    } else {
-      editarea.innerHTML += strTime;
     }
   };
 

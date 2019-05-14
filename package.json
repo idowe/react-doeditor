@@ -38,20 +38,6 @@
     "coverage": "jest --coverage",
     "lint-staged": "lint-staged"
   },
-  "jest": {
-    "setupFiles": [
-      "./tests/setup.js"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*"
-    ],
-    "transform": {
-      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
-    },
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
-  },
   "dependencies": {
     "babel-runtime": "6.x",
     "classnames": "^2.2.5",
