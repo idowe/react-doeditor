@@ -167,32 +167,36 @@ App.defaultProps = {
   fontSize: [
     {
       name: "10px",
-      value: "1"
+      value: "10"
     },
     {
       name: "12px",
-      value: "2"
+      value: "12"
     },
     {
-      name: "16px",
-      value: "3",
+      name: "14px",
+      value: "14",
       defualt: true
     },
     {
+      name: "16px",
+      value: "16"
+    },
+    {
       name: "18px",
-      value: "4"
+      value: "18"
     },
     {
       name: "24px",
-      value: "5"
+      value: "24"
     },
     {
       name: "32px",
-      value: "6"
+      value: "32"
     },
     {
       name: "38px",
-      value: "7"
+      value: "38"
     }
   ],
   paragraph: [

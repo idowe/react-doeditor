@@ -514,7 +514,12 @@ export default class EditorCore extends Component {
     this.refs.fontsize.toggle(offsetPosition, fontsize => {
       EditorDom.focusNode(editarea);
       EditorSelection.restoreRange();
-      EditorHistory.execCommand("fontsize", false, fontsize);
+      EditorHistory.execCommand("fontsize", false, 3);
+      var fontElements = document.getElementsByTagName("font");
+      for (var i = 0, len = fontElements.length; i < len; ++i) {
+        fontElements[i].removeAttribute("size");
+        fontElements[i].style.fontSize = fontsize + "px";
+      }
       this.handleRangeChange();
     });
   };
@@ -599,7 +604,6 @@ export default class EditorCore extends Component {
     } else {
       editarea.innerHTML += strTime;
     }
-    // EditorHistory.execCommand('inserthtml',false,"<hr/><p><br/></p>");
   };
 
   editorJustify = (editarea, root) => {
@@ -609,9 +613,7 @@ export default class EditorCore extends Component {
     ) {
       console.log(EditorSelection.range);
       let nodeContent = EditorSelection.range.cloneContents();
-      console.log(nodeContent);
       let nodeContentList = nodeContent.querySelectorAll("p");
-      console.log(nodeContentList);
       let p = document.createElement("p");
       if (nodeContentList.length > 0) {
         nodeContentList.forEach((item, index) => {
