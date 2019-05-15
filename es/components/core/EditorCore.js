@@ -325,7 +325,12 @@ var EditorCore = function (_Component) {
       _this.refs.fontsize.toggle(offsetPosition, function (fontsize) {
         EditorDom.focusNode(editarea);
         EditorSelection.restoreRange();
-        EditorHistory.execCommand("fontsize", false, fontsize);
+        EditorHistory.execCommand("fontsize", false, 3);
+        var fontElements = document.getElementsByTagName("font");
+        for (var i = 0, len = fontElements.length; i < len; ++i) {
+          fontElements[i].removeAttribute("size");
+          fontElements[i].style.fontSize = fontsize + "px";
+        }
         _this.handleRangeChange();
       });
     };
@@ -407,16 +412,13 @@ var EditorCore = function (_Component) {
       } else {
         editarea.innerHTML += strTime;
       }
-      // EditorHistory.execCommand('inserthtml',false,"<hr/><p><br/></p>");
     };
 
     _this.editorJustify = function (editarea, root) {
       if (EditorSelection.range && EditorSelection.validateRange(root, EditorSelection.range)) {
         console.log(EditorSelection.range);
         var nodeContent = EditorSelection.range.cloneContents();
-        console.log(nodeContent);
         var nodeContentList = nodeContent.querySelectorAll("p");
-        console.log(nodeContentList);
         var p = document.createElement("p");
         if (nodeContentList.length > 0) {
           nodeContentList.forEach(function (item, index) {
